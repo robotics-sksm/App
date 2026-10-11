@@ -947,7 +947,7 @@
                 '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl flex flex-col justify-between">' +
                     '<div>' +
                         '<div class="aspect[4/3] overflow-hidden">' +
-                            '<img src="' + escapeAttr(p.GalleryURLs || 'https://placehold.co/600x400/10b981/ffffff?text=Project') + '" class="w-full h-full object-cover" alt="Project">' +
+                            '<img src="' + {{ p.GalleryURLs.split(',')[0].trim() || 'https://placehold.co/600x400/10b981/ffffff?text=Project' }} + '" class="w-full h-full object-cover" alt="Project">' +
                         '</div>' +
                         '<div class="p-5 space-y-2">' +
                             '<h4 class="font-bold text-lg text-white">' + escapeAttr(p.ProjectTitle) + '</h4>' +
