@@ -717,6 +717,136 @@
             }
         }
 
+        function openProfileModal() {
+            if (!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to view your profile.');
+                openModal('loginModal');
+                return;
+            }
+
+            document.getElementById('detailModalContent').innerHTML = `
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-white">Edit User Profile</h3>
+                    <form onsubmit="handleProfileSaveSubmit(event)" class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="relative w-20 h-20 rounded-full overflow-hidden border border-cyan-500/40 bg-slate-900 group">
+                                <img id="profileAvatarPreview" src="${escapeAttr(currentUser.ProfileImageBase64 || 'https://placehold.co/100x100/06b6d4/ffffff?text=U')}" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Profile Image</label>
+                                <input type="file" id="profileImageFileInput" accept="image/*" onchange="handleProfileImageSelect(event)" class="text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500 file:text-slate-950 hover:file:bg-cyan-400 cursor-pointer">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                                <input type="text" id="profFullName" value="${escapeAttr(currentUser.FullName || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">IC / ID Number</label>
+                                <input type="text" id="profIC" value="${escapeAttr(currentUser.ICNumber || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">School</label>
+                                <input type="text" id="profSchool" value="${escapeAttr(currentUser.School || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Class / Form</label>
+                                <input type="text" id="profInterests" value="${escapeAttr(currentUser.Interests || '')}" placeholder="e.g. 5 Beta / RBT Club" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Email</label>
+                                <input type="email" id="profEmail" value="${escapeAttr(currentUser.Email || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Parent's Name</label>
+                                <input type="text" id="profParentName" value="${escapeAttr(currentUser.ParentName || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Contact Number (WhatsApp)</label>
+                                <input type="text" id="profWhatsApp" value="${escapeAttr(currentUser.WhatsApp || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Save Profile</button>
+                    </form>
+                </div>
+            `;
+            openModal('detailModal');
+        }
+
+        let tempProfileImageBase64 = null;
+        function handleProfileImageSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                tempProfileImageBase64 = event.target.result;
+                document.getElementById('profileAvatarPreview').src = tempProfileImageBase64;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleProfileSaveSubmit(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('profFullName').value;
+            const icNumber = document.getElementById('profIC').value;
+            const school = document.getElementById('profSchool').value;
+            const interests = document.getElementById('profInterests').value;
+            const email = document.getElementById('profEmail').value;
+            const parentName = document.getElementById('profParentName').value;
+            const whatsApp = document.getElementById('profWhatsApp').value;
+            
+            let profileImageBase64 = currentUser.ProfileImageBase64;
+            if (tempProfileImageBase64) {
+                try {
+                    // Upload profile image to Google Drive via API to get public link format
+                    const uploadRes = await api.run('uploadImage', {
+                        base64Data: tempProfileImageBase64,
+                        fileName: currentUser.Username + '_avatar.jpg'
+                    });
+                    if (uploadRes && uploadRes.success) {
+                        profileImageBase64 = uploadRes.url;
+                    }
+                } catch(err) {
+                    console.error("Avatar upload failed, falling back to data URL", err);
+                    profileImageBase64 = tempProfileImageBase64;
+                }
+            }
+
+            try {
+                const res = await api.run('updateProfile', {
+                    username: currentUser.Username,
+                    fullName,
+                    icNumber,
+                    school,
+                    interests,
+                    email,
+                    parentName,
+                    whatsApp,
+                    profileImageBase64
+                });
+
+                if (res && res.success !== false) {
+                    currentUser.FullName = fullName;
+                    currentUser.ICNumber = icNumber;
+                    currentUser.School = school;
+                    currentUser.Interests = interests;
+                    currentUser.Email = email;
+                    currentUser.ParentName = parentName;
+                    currentUser.WhatsApp = whatsApp;
+                    currentUser.ProfileImageBase64 = profileImageBase64;
+
+                    updateAuthUI();
+                    closeModal('detailModal');
+                    alertModal('Success', res.message || 'Profile updated successfully!');
+                } else {
+                    alertModal('Update Failed', res.message || 'Could not update profile.');
+                }
+            } catch (err) {
+                alertModal('Error', err.message);
+            }
+        }
+        
         function openModal(id) { 
             const m = document.getElementById(id);
             if(m) m.classList.remove('hidden'); 
