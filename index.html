@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIDM Hub - Robotics, Innovation & Digital Maker</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Robotics, Innovation & Digital Maker (RIDM) Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,1028 +11,1414 @@
             theme: {
                 extend: {
                     colors: {
-                        darker: '#07090e',
-                        dark: '#0b0f19',
-                        card: '#131c2e',
-                        accent: {
-                            cyan: '#06b6d4',
-                            emerald: '#10b981',
-                            violet: '#8b5cf6',
-                            amber: '#f59e0b'
-                        }
+                        darkBg: '#0B0F19',
+                        darkCard: '#111827',
+                        darkBorder: '#1F2937',
+                        neonCyan: '#06B6D4',
+                        neonEmerald: '#10B981',
+                        neonViolet: '#8B5CF6'
                     }
                 }
             }
         }
     </script>
-    <!-- FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Inter', sans-serif; }
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #0b0f19; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #334155; }
-        .glass-panel { background: rgba(19, 28, 46, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glow-cyan { box-shadow: 0 0 25px rgba(6, 182, 212, 0.2); }
-        .glow-violet { box-shadow: 0 0 25px rgba(139, 92, 246, 0.2); }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
     </style>
 </head>
-<body class="bg-dark text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
+<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-4 lg:px-8 py-3.5 flex items-center justify-between">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-violet-600 to-emerald-400 flex items-center justify-center text-white font-black text-xl shadow-lg glow-cyan">
-                R
+    <header class="sticky top-0 z-50 bg-darkCard/80 backdrop-blur-md border-b border-darkBorder px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                <i class="fa-solid fa-robot text-white text-lg"></i>
             </div>
             <div>
-                <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-cyan-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">RIDM HUB</h1>
-                <p class="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Robotics, Innovation & Digital Maker</p>
+                <h1 class="font-bold text-lg bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">RIDM Hub</h1>
+                <p class="text-xs text-slate-400 hidden sm:block">Robotics, Innovation & Digital Maker</p>
             </div>
         </div>
 
-        <!-- DESKTOP PILL MENU BAR -->
-        <nav id="desktop-menu" class="hidden lg:flex items-center space-x-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-full shadow-xl">
-            <button onclick="switchTab('home')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-cyan-400 bg-cyan-950/60" data-tab="home">
-                <i class="fa-solid fa-house"></i>
-                <span class="menu-label">Home</span>
+        <!-- Desktop Menu Bar -->
+        <nav id="desktopMenu" class="hidden md:flex items-center space-x-1.5 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-full shadow-xl">
+            <button onclick="switchTab('home')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-cyan-400 bg-cyan-950/80 border border-cyan-500/30" data-tab="home">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="max-w-xs opacity-100 ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Home</span>
             </button>
-            <button onclick="switchTab('inventory')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="inventory">
-                <i class="fa-solid fa-boxes-stacked"></i>
-                <span class="menu-label">Inventory & Lending</span>
+            <button onclick="switchTab('inventory')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="inventory">
+                <i class="fa-solid fa-toolbox text-base"></i>
+                <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Inventory</span>
             </button>
-            <button onclick="switchTab('learning')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="learning">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <span class="menu-label">Learning Hub</span>
+            <button onclick="switchTab('learning')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="learning">
+                <i class="fa-solid fa-graduation-cap text-base"></i>
+                <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Learning</span>
             </button>
-            <button onclick="switchTab('contests')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="contests">
-                <i class="fa-solid fa-trophy"></i>
-                <span class="menu-label">Contest Hub</span>
+            <button onclick="switchTab('contests')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="contests">
+                <i class="fa-solid fa-trophy text-base"></i>
+                <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Contests</span>
             </button>
-            <button onclick="switchTab('projects')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="projects">
-                <i class="fa-solid fa-lightbulb"></i>
-                <span class="menu-label">Project Corner</span>
+            <button onclick="switchTab('projects')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="projects">
+                <i class="fa-solid fa-lightbulb text-base"></i>
+                <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Projects</span>
             </button>
-            <button onclick="switchTab('marketplace')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="marketplace">
-                <i class="fa-solid fa-store"></i>
-                <span class="menu-label">Marketplace</span>
+            <button onclick="switchTab('marketplace')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="marketplace">
+                <i class="fa-solid fa-store text-base"></i>
+                <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Market</span>
+            </button>
+            <button onclick="switchTab('inbox')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="inbox">
+                <i class="fa-solid fa-envelope text-base"></i>
+                <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Inbox</span>
             </button>
         </nav>
 
-        <!-- RIGHT HEADER: PROFILE / AUTH / NOTIFICATIONS -->
+        <!-- Right Header Area -->
         <div class="flex items-center space-x-3">
-            <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition" title="Toggle Theme">
-                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                <i id="themeIcon" class="fa-solid fa-moon"></i>
             </button>
-            <button onclick="openBackendModal()" class="hidden md:flex items-center space-x-2 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-cyan-400 transition" title="Backend Setup & Code">
-                <i class="fa-solid fa-code text-cyan-400"></i>
-                <span>Apps Script</span>
-            </button>
-            <div id="auth-header-container">
-                <!-- Dynamic Auth / Profile UI injected via JS -->
+
+            <div id="authHeaderSection" class="flex items-center space-x-2">
+                <button onclick="openModal('loginModal')" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 transition-all">Sign In</button>
+                <button onclick="openModal('registerModal')" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white shadow-md shadow-cyan-500/20 transition-all">Register</button>
+            </div>
+
+            <div id="userHeaderSection" class="hidden items-center space-x-3">
+                <button onclick="openCartModal()" class="relative p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition-colors">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cartBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-cyan-500 text-slate-950 font-bold text-xs rounded-full flex items-center justify-center">0</span>
+                </button>
+                <div onclick="openProfileModal()" class="flex items-center space-x-2 cursor-pointer bg-slate-800/80 hover:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 transition-all">
+                    <img id="headerAvatar" src="https://placehold.co/100x100/06b6d4/ffffff?text=U" class="w-6 h-6 rounded-full object-cover" alt="Avatar">
+                    <span id="headerUsername" class="text-xs font-semibold text-cyan-300">Username</span>
+                </div>
+                <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition-all flex items-center space-x-1" title="Log Out">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main id="app-content" class="flex-grow max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 pb-24 lg:pb-12">
-        <!-- Dynamic Views Injected Here -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 pb-24 md:pb-8">
+        
+        <!-- HOME TAB -->
+        <section id="tab-home" class="tab-content space-y-8">
+            <div class="relative rounded-3xl bg-gradient-to-r from-cyan-950/60 via-slate-900 to-violet-950/60 border border-cyan-500/20 p-8 md:p-12 overflow-hidden shadow-2xl">
+                <div class="absolute right-0 top-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="px-3 py-1 text-xs font-semibold bg-cyan-500/20 text-cyan-300 rounded-full border border-cyan-500/30">Next-Gen Maker Hub</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">Empowering Future Robotics & Digital Creators</h2>
+                    <p class="text-slate-300 text-sm md:text-base">Explore cutting-edge projects from Google Sheets, borrow school inventory, master coding modules, and trade items in our rewards marketplace.</p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="switchTab('projects')" class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/30 transition-all">Explore Projects</button>
+                        <button onclick="openModal('membershipModal')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition-all">Renew Membership</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Carousel -->
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-calendar-days text-cyan-400"></i>
+                        <span>Current & Upcoming Events</span>
+                    </h3>
+                    <span class="text-xs text-slate-400">Interactive Event Posters</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div onclick="openEventDetail('RoboWars 2026', 'National robotics competition featuring combat bots and autonomous maze solvers.', 'https://placehold.co/600x400/06b6d4/ffffff?text=RoboWars+2026')" class="group cursor-pointer rounded-2xl bg-darkCard border border-darkBorder overflow-hidden hover:border-cyan-500/50 transition-all shadow-xl">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://placehold.co/600x400/06b6d4/ffffff?text=RoboWars+2026" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Event">
+                            <span class="absolute top-3 right-3 px-2.5 py-1 text-xs font-bold bg-cyan-500 text-slate-950 rounded-lg shadow">Featured</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h4 class="font-bold text-lg text-white group-hover:text-cyan-400 transition-colors">RoboWars National Championship 2026</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2">Join us for the ultimate showdown of combat robotics and IoT automation.</p>
+                        </div>
+                    </div>
+                    <div onclick="openEventDetail('IoT Maker Hackathon', 'Build smart city solutions using ESP32 and sensors within 24 hours.', 'https://placehold.co/600x400/8b5cf6/ffffff?text=IoT+Hackathon')" class="group cursor-pointer rounded-2xl bg-darkCard border border-darkBorder overflow-hidden hover:border-violet-500/50 transition-all shadow-xl">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://placehold.co/600x400/8b5cf6/ffffff?text=IoT+Hackathon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Event">
+                            <span class="absolute top-3 right-3 px-2.5 py-1 text-xs font-bold bg-violet-500 text-white rounded-lg shadow">Hackathon</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h4 class="font-bold text-lg text-white group-hover:text-violet-400 transition-colors">Smart City IoT Maker Hackathon</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2">Prototype connected microcontrollers to solve real-world environmental challenges.</p>
+                        </div>
+                    </div>
+                    <div onclick="openEventDetail('3D Printing & CAD Masterclass', 'Learn parametric modeling and slicing for rapid maker prototyping.', 'https://placehold.co/600x400/10b981/ffffff?text=3D+Masterclass')" class="group cursor-pointer rounded-2xl bg-darkCard border border-darkBorder overflow-hidden hover:border-emerald-500/50 transition-all shadow-xl">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="https://placehold.co/600x400/10b981/ffffff?text=3D+Masterclass" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Event">
+                            <span class="absolute top-3 right-3 px-2.5 py-1 text-xs font-bold bg-emerald-500 text-slate-950 rounded-lg shadow">Workshop</span>
+                        </div>
+                        <div class="p-5 space-y-2">
+                            <h4 class="font-bold text-lg text-white group-hover:text-emerald-400 transition-colors">3D Printing & CAD Masterclass</h4>
+                            <p class="text-xs text-slate-400 line-clamp-2">Master advanced 3D printing techniques and CAD modeling from scratch.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INVENTORY TAB -->
+        <section id="tab-inventory" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-toolbox text-cyan-400"></i>
+                        <span>Asset & School Inventory Lending</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Fetched live from Sheet.Inventory. Request equipment for maker projects.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="adminAddInventoryBtn" onclick="openInventoryModal()" class="hidden px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs flex items-center space-x-1">
+                        <i class="fa-solid fa-plus"></i><span>Add Item</span>
+                    </button>
+                    <button onclick="openLendingLog()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 text-xs font-semibold">My Lending Log</button>
+                </div>
+            </div>
+            <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </section>
+
+        <!-- LEARNING TAB -->
+        <section id="tab-learning" class="tab-content hidden space-y-6">
+            <div>
+                <h3 class="text-2xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-graduation-cap text-cyan-400"></i>
+                    <span>Learning Hub & Progress Tracking</span>
+                </h3>
+                <p class="text-xs text-slate-400">Complete modular maker lessons, earn badges, and gain reward points.</p>
+            </div>
+            <div id="learningModulesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- CONTESTS TAB -->
+        <section id="tab-contests" class="tab-content hidden space-y-6">
+            <div>
+                <h3 class="text-2xl font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-trophy text-cyan-400"></i>
+                    <span>Contest Hub</span>
+                </h3>
+                <p class="text-xs text-slate-400">Browse active competitions, hackathons, and challenges.</p>
+            </div>
+            <div id="contestsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- PROJECTS TAB -->
+        <section id="tab-projects" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-lightbulb text-cyan-400"></i>
+                        <span>Project Corner (Sheet.Projects)</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Explore community innovations fetched from Google Sheets and submit your own.</p>
+                </div>
+                <button onclick="openSubmitProjectModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white text-xs font-bold shadow-lg shadow-cyan-500/20 flex items-center space-x-2">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Submit Project</span>
+                </button>
+            </div>
+            <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- MARKETPLACE TAB -->
+        <section id="tab-marketplace" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-store text-cyan-400"></i>
+                        <span>Maker Marketplace (Sheet.Marketplace)</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Exchange reward points or purchase components fetched from Google Sheets.</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="adminAddMarketBtn" onclick="openMarketplaceModal()" class="hidden px-4 py-2 rounded-xl bg-violet-600 text-white font-bold text-xs flex items-center space-x-1">
+                        <i class="fa-solid fa-plus"></i><span>Add Market Item</span>
+                    </button>
+                    <button onclick="openCartModal()" class="px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>View Cart (<span id="cartCountHeader">0</span>)</span>
+                    </button>
+                </div>
+            </div>
+            <div id="marketplaceGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </section>
+
+        <!-- INBOX TAB -->
+        <section id="tab-inbox" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-envelope text-cyan-400"></i>
+                        <span>Direct Messaging Inbox</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">Communicate with peers and manage drafts.</p>
+                </div>
+                <button onclick="openSendMessageModal()" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow">Compose Message</button>
+            </div>
+            <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 shadow-xl">
+                <div id="messagesList" class="space-y-4"></div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- MOBILE BOTTOM NAVIGATION -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-slate-800 px-4 py-2 flex justify-around items-center bg-darker/90 backdrop-blur-lg">
-        <button onclick="switchTab('home')" class="mobile-nav-btn flex flex-col items-center text-xs text-cyan-400" data-tab="home">
-            <i class="fa-solid fa-house text-lg mb-0.5"></i>
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-darkCard/95 backdrop-blur-md border-t border-darkBorder px-4 py-2 flex justify-around items-center z-50">
+        <button onclick="switchTab('home')" class="mobile-nav-btn flex flex-col items-center text-cyan-400 text-xs" data-tab="home">
+            <i class="fa-solid fa-house text-lg"></i>
             <span>Home</span>
         </button>
-        <button onclick="switchTab('inventory')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="inventory">
-            <i class="fa-solid fa-boxes-stacked text-lg mb-0.5"></i>
+        <button onclick="switchTab('inventory')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="inventory">
+            <i class="fa-solid fa-toolbox text-lg"></i>
             <span>Inventory</span>
         </button>
-        <button onclick="switchTab('learning')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="learning">
-            <i class="fa-solid fa-graduation-cap text-lg mb-0.5"></i>
-            <span>Learn</span>
+        <button onclick="switchTab('learning')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="learning">
+            <i class="fa-solid fa-graduation-cap text-lg"></i>
+            <span>Learning</span>
         </button>
-        <button onclick="switchTab('contests')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="contests">
-            <i class="fa-solid fa-trophy text-lg mb-0.5"></i>
-            <span>Contests</span>
-        </button>
-        <button onclick="switchTab('projects')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="projects">
-            <i class="fa-solid fa-lightbulb text-lg mb-0.5"></i>
+        <button onclick="switchTab('projects')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="projects">
+            <i class="fa-solid fa-lightbulb text-lg"></i>
             <span>Projects</span>
         </button>
-        <button onclick="switchTab('marketplace')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="marketplace">
-            <i class="fa-solid fa-store text-lg mb-0.5"></i>
-            <span>Store</span>
+        <button onclick="switchTab('marketplace')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="marketplace">
+            <i class="fa-solid fa-store text-lg"></i>
+            <span>Market</span>
+        </button>
+        <button onclick="switchTab('inbox')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="inbox">
+            <i class="fa-solid fa-envelope text-lg"></i>
+            <span>Inbox</span>
         </button>
     </nav>
 
-    <!-- MODALS CONTAINER -->
-    <div id="modal-container"></div>
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toast-container" class="fixed bottom-16 lg:bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-3xl w-full max-w-md p-8 space-y-6 shadow-2xl relative">
+            <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="text-center space-y-2">
+                <h3 class="text-2xl font-bold text-white">Welcome Back</h3>
+                <p class="text-xs text-slate-400">Sign in against Sheet.Users database</p>
+            </div>
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Username</label>
+                    <input type="text" id="loginUsername" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 pr-10 text-sm text-white focus:outline-none focus:border-cyan-500">
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword', 'loginEyeIcon')" class="absolute right-3 top-3 text-slate-400 hover:text-white focus:outline-none">
+                            <i id="loginEyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-3xl w-full max-w-md p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="text-center space-y-2">
+                <h3 class="text-2xl font-bold text-white">Create Account</h3>
+                <p class="text-xs text-slate-400">Registers directly into Sheet.Users</p>
+            </div>
+            <form onsubmit="handleRegisterSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Username</label>
+                    <input type="text" id="regUsername" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+                    <input type="text" id="regFullName" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Email</label>
+                    <input type="email" id="regEmail" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="regPassword" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 pr-10 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="Min 8 chars, A-Z, a-z, 0-9, symbol">
+                        <button type="button" onclick="togglePasswordVisibility('regPassword', 'regEyeIcon')" class="absolute right-3 top-3 text-slate-400 hover:text-white focus:outline-none">
+                            <i id="regEyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1">Min 8 chars with uppercase, lowercase, digit & special symbol (no spaces).</p>
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Membership Modal -->
+    <div id="membershipModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-3xl w-full max-w-lg p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('membershipModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="space-y-2">
+                <h3 class="text-2xl font-bold text-white">Membership Application & Renewal</h3>
+                <p class="text-xs text-slate-400">Saves to Sheet.MembershipApplications.</p>
+            </div>
+            <form onsubmit="handleMembershipSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Choose Months to Stay Active (1-12)</label>
+                    <select id="membershipMonths" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                        <option value="1">1 Month (RM 10)</option>
+                        <option value="3">3 Months (RM 25)</option>
+                        <option value="6">6 Months (RM 45)</option>
+                        <option value="12">12 Months (RM 80)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Referral Code (Optional)</label>
+                    <input type="text" id="membershipReferral" placeholder="e.g. TEACHER01" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Receipt URL / Notes</label>
+                    <input type="text" id="membershipReceiptURL" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Generic Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-3xl w-full max-w-2xl p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('detailModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div id="detailModalContent" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-3xl w-full max-w-xl p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('cartModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-2xl font-bold text-white">Marketplace Cart</h3>
+            <div id="cartItemsList" class="space-y-3"></div>
+            <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-400">Total Due:</p>
+                    <p id="cartTotalPrice" class="text-lg font-bold text-cyan-400">RM 0.00 / 0 Points</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="checkoutCart('Cash')" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Checkout Cash</button>
+                    <button onclick="checkoutCart('Points')" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Checkout Points</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // --- APP STATE & INITIALIZATION ---
-        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbx.../exec"; // User can configure via Settings
-        let appState = {
-            currentTab: 'home',
-            user: JSON.parse(localStorage.getItem('ridm_user')) || null, // {username, fullName, role: 'Active Member', points: 350, email: 'pupil@ridm.edu.my'}
-            apiUrl: localStorage.getItem('ridm_api_url') || DEFAULT_API_URL,
-            cart: JSON.parse(localStorage.getItem('ridm_cart')) || [],
-            messages: [
-                {id: 1, sender: 'AdminTeacher', recipient: 'student1', subject: 'Welcome to RIDM Hub!', body: 'Your membership is active. Enjoy exploring our maker space and learning modules.', status: 'unread', timestamp: '2026-06-01 10:00'}
-            ],
-            projects: [
-                {id: 1, title: 'Smart IoT Plant Watering System', description: 'Automated soil moisture monitoring using ESP32 and micro:bit with cloud dashboard logging.', tagging: 'IoT, micro:bit, ESP32', componentsUsed: 'ESP32 NodeMCU, Soil Moisture Sensor, Relay Module', totalCost: 'RM 45.00', galleryURLs: ['https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=600'], attachmentURLs: [], groupMembers: 'Ali, Siti', createdBy: 'AhmadZ', approvedBy: 'TeacherCikgu', likeCount: 24, status: 'Approved'},
-                {id: 2, title: 'Bluetooth Obstacle Avoidance Robot', description: 'REKA:BIT chassis powered robot with ultrasonic sensors and smartphone remote control via Bluetooth.', tagging: 'RBT Project, REKA:BIT, Arduino', componentsUsed: 'REKA:BIT Board, HC-05 Bluetooth, Ultrasonic Sensor', totalCost: 'RM 88.50', galleryURLs: ['https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600'], attachmentURLs: [], groupMembers: 'Tan Mei Ling', createdBy: 'MeiLing', approvedBy: 'TeacherCikgu', likeCount: 41, status: 'Approved'}
-            ],
-            inventory: [
-                {id: 'INV-01', name: 'BBC micro:bit V2 Go Bundle', category: 'Microcontroller', totalStock: 30, availableStock: 18, status: 'Available', imageURL: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400'},
-                {id: 'INV-02', name: 'REKA:BIT Robotics Controller', category: 'Robotics', totalStock: 15, availableStock: 5, status: 'Low Stock', imageURL: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400'},
-                {id: 'INV-03', name: 'ESP32 CAM WiFi Module', category: 'IoT', totalStock: 20, availableStock: 12, status: 'Available', imageURL: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400'},
-                {id: 'INV-04', name: 'Arduino Uno R3 Starter Kit', category: 'Microcontroller', totalStock: 25, availableStock: 0, status: 'Out of Stock', imageURL: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400'}
-            ],
-            marketplace: [
-                {id: 'MKT-01', name: 'Soldering Iron Station 60W', description: 'Digital adjustable temperature soldering station with stand and brass cleaner.', priceRM: 65.00, pointsValue: 650, stock: 8, imageURL: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400'},
-                {id: 'MKT-02', name: 'Jumper Wires Male-to-Male (40pcs)', description: 'Standard flexible breadboard jumper cables for prototyping.', priceRM: 4.50, pointsValue: 45, stock: 45, imageURL: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400'},
-                {id: 'MKT-03', name: 'OLED 0.96 inch I2C Display', description: 'High contrast white monochrome display module for micro:bit and Arduino.', priceRM: 12.00, pointsValue: 120, stock: 14, imageURL: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400'}
-            ],
-            learningModules: [
-                {id: 'MOD-1', title: 'micro:bit Fundamentals & Sensors', category: 'Beginner', progress: 100, score: 95, badge: 'micro:bit Pioneer', status: 'Completed'},
-                {id: 'MOD-2', title: 'REKA:BIT Robotics & Motor Control', category: 'Intermediate', progress: 60, score: 0, badge: 'Robotics Builder', status: 'In Progress'},
-                {id: 'MOD-3', title: 'IoT Cloud Telemetry with ESP32', category: 'Advanced', progress: 0, score: 0, badge: 'IoT Expert', status: 'Locked'}
-            ],
-            contests: [
-                {id: 1, title: 'National Robotics & Coding Challenge 2026', date: '15 July 2026', description: 'Build autonomous rescue rovers using micro:bit and REKA:BIT. Open to all active student members.', poster: 'https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?w=600'},
-                {id: 2, title: 'National Green Energy Maker Hackathon', date: '28 August 2026', description: 'Design smart IoT energy monitoring systems for sustainable smart schools.', poster: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=600'}
-            ],
-            events: [
-                {id: 1, title: 'RIDM Maker Fair & Open Day', date: 'Saturday, 10 AM', description: 'Experience live student robotics showcases, 3D printing workshops, and AI demo booths.', image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800'},
-                {id: 2, title: 'Advanced IoT & Python Workshop', date: 'Next Tuesday, 2 PM', description: 'Learn MicroPython programming on ESP32 microcontrollers with cloud MQTT broker integration.', image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800'}
-            ]
+        let currentUser = null;
+        let cart = [];
+        let appData = {
+            Users: [],
+            Projects: [],
+            Inventory: [],
+            LendingLogs: [],
+            Marketplace: [],
+            Orders: [],
+            Messages: [],
+            Achievements: [],
+            MembershipApplications: [],
+            LearningProgress: []
         };
 
-        // Initialize App on Load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderAuthHeader();
-            switchTab(appState.currentTab);
-        });
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-2xl text-sm font-medium flex items-center space-x-3 transition-all duration-300 transform translate-y-2 opacity-0 ${type === 'success' ? 'bg-emerald-950/90 border border-emerald-500/50 text-emerald-300' : 'bg-rose-950/90 border border-rose-500/50 text-rose-300'}`;
-            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-exclamation text-rose-400'} text-lg"></i><span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
-            setTimeout(() => {
-                toast.classList.add('translate-y-2', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+        function alertModal(title, message) {
+            document.getElementById('detailModalContent').innerHTML = `
+                <div class="text-center space-y-3 py-4">
+                    <div class="w-12 h-12 rounded-full bg-cyan-500/20 text-cyan-400 mx-auto flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-info"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-white">${escapeAttr(title)}</h4>
+                    <p class="text-xs text-slate-300">${escapeAttr(message)}</p>
+                    <button onclick="closeModal('detailModal')" class="px-6 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs mt-2">OK</button>
+                </div>
+            `;
+            openModal('detailModal');
         }
 
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-        }
+        function initDragAndDropUploader(dropZoneId, inputId, previewContainerId, onImagesUpdated) {
+            const dropZone = document.getElementById(dropZoneId);
+            const fileInput = document.getElementById(inputId);
+            const previewContainer = document.getElementById(previewContainerId);
 
-        // --- NAVIGATION & ROUTING ---
-        function switchTab(tabName) {
-            appState.currentTab = tabName;
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            if (!dropZone || !fileInput || !previewContainer) return;
 
-            // Update Desktop Nav UI
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.dataset.tab === tabName) {
-                    btn.className = "nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-cyan-400 bg-cyan-950/60";
-                } else {
-                    btn.className = "nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60";
+            let uploadedImages = [];
+
+            const handleFiles = (files) => {
+                if (uploadedImages.length + files.length > 5) {
+                    alertModal('Upload Limit Exceeded', 'You can upload a maximum of 5 images.');
+                    return;
                 }
-            });
-
-            // Update Mobile Nav UI
-            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-                if(btn.dataset.tab === tabName) {
-                    btn.className = "mobile-nav-btn flex flex-col items-center text-xs text-cyan-400";
-                } else {
-                    btn.className = "mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white";
-                }
-            });
-
-            renderCurrentView();
-        }
-
-        function renderCurrentView() {
-            const container = document.getElementById('app-content');
-            switch(appState.currentTab) {
-                case 'home':
-                    container.innerHTML = renderHomeView();
-                    break;
-                case 'inventory':
-                    container.innerHTML = renderInventoryView();
-                    break;
-                case 'learning':
-                    container.innerHTML = renderLearningView();
-                    break;
-                case 'contests':
-                    container.innerHTML = renderContestsView();
-                    break;
-                case 'projects':
-                    container.innerHTML = renderProjectsView();
-                    break;
-                case 'marketplace':
-                    container.innerHTML = renderMarketplaceView();
-                    break;
-                case 'profile':
-                    container.innerHTML = renderProfileView();
-                    break;
-                default:
-                    container.innerHTML = renderHomeView();
-            }
-        }
-
-        // --- STREAMING_CHUNK:Rendering Home view with interactive event carousel... ---
-        function renderHomeView() {
-            return `
-                <div class="space-y-8 animate-fadeIn">
-                    <!-- HERO BANNER -->
-                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-violet-950 border border-slate-800 p-8 lg:p-12 shadow-2xl">
-                        <div class="relative z-10 max-w-2xl space-y-4">
-                            <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold tracking-wide uppercase">RIDM Hub Ecosystem</span>
-                            <h2 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-white">Empowering Future Innovators & Digital Makers</h2>
-                            <p class="text-slate-300 text-base lg:text-lg">Access school inventory, collaborative robotics projects, interactive learning modules, and marketplace rewards all in one digital hub.</p>
-                            <div class="flex flex-wrap gap-4 pt-2">
-                                <button onclick="switchTab('projects')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg hover:opacity-90 transition">Explore Projects</button>
-                                <button onclick="switchTab('marketplace')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-slate-700 transition">Browse Marketplace</button>
-                            </div>
-                        </div>
-                        <div class="absolute right-0 bottom-0 opacity-20 lg:opacity-40 pointer-events-none transform translate-x-10 translate-y-10">
-                            <i class="fa-solid fa-microchip text-[260px] text-cyan-400"></i>
-                        </div>
-                    </div>
-
-                    <!-- EVENT CAROUSEL SECTION -->
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-xl font-bold text-white flex items-center space-x-2"><i class="fa-solid fa-bullhorn text-cyan-400"></i><span>Current & Upcoming Events</span></h3>
-                            <span class="text-xs text-slate-400">Swipe or click posters to view details</span>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            ${appState.events.map(ev => `
-                                <div class="glass-panel rounded-2xl overflow-hidden hover:border-cyan-500/50 transition duration-300 flex flex-col cursor-pointer" onclick="openEventModal(${ev.id})">
-                                    <div class="h-48 overflow-hidden relative">
-                                        <img src="${ev.image}" alt="${ev.title}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
-                                        <div class="absolute top-3 right-3 bg-dark/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-cyan-400 border border-slate-700">${ev.date}</div>
-                                    </div>
-                                    <div class="p-6 flex flex-col flex-grow space-y-2">
-                                        <h4 class="text-lg font-bold text-white">${ev.title}</h4>
-                                        <p class="text-slate-400 text-sm flex-grow">${ev.description}</p>
-                                        <div class="pt-4 flex items-center text-cyan-400 text-sm font-semibold space-x-2">
-                                            <span>View Event Details</span>
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- STREAMING_CHUNK:Rendering Asset Inventory and Lending Management view... ---
-        function renderInventoryView() {
-            const isMemberActive = appState.user && appState.user.role === 'Active Member';
-            return `
-                <div class="space-y-6">
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Asset & School Inventory</h2>
-                            <p class="text-slate-400 text-sm">Browse maker equipment and request lending services for active members.</p>
-                        </div>
-                        ${!isMemberActive ? `<div class="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-medium flex items-center space-x-2"><i class="fa-solid fa-triangle-exclamation"></i><span>Active Membership Required for Lending</span></div>` : ''}
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        ${appState.inventory.map(item => `
-                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col">
-                                <div class="h-40 overflow-hidden relative bg-slate-900">
-                                    <img src="${item.imageURL}" alt="${item.name}" class="w-full h-full object-cover">
-                                    <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold ${item.status === 'Available' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : item.status === 'Low Stock' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}">${item.status}</span>
-                                </div>
-                                <div class="p-5 flex flex-col flex-grow space-y-3">
-                                    <div>
-                                        <span class="text-[10px] uppercase font-semibold text-cyan-400 tracking-wider">${item.category}</span>
-                                        <h4 class="text-base font-bold text-white mt-0.5">${item.name}</h4>
-                                    </div>
-                                    <div class="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
-                                        <span>Total: ${item.totalStock}</span>
-                                        <span class="text-emerald-400 font-semibold">Available: ${item.availableStock}</span>
-                                    </div>
-                                    <button onclick="requestLending('${item.id}')" ${item.availableStock === 0 || !isMemberActive ? 'disabled' : ''} class="w-full py-2.5 rounded-xl text-xs font-semibold transition ${item.availableStock > 0 && isMemberActive ? 'bg-cyan-500 hover:bg-cyan-600 text-white shadow-lg' : 'bg-slate-800 text-slate-500 cursor-not-allowed'}">
-                                        ${item.availableStock > 0 ? (isMemberActive ? 'Request Lending' : 'Unlock Membership') : 'Out of Stock'}
-                                    </button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- STREAMING_CHUNK:Rendering Learning Hub with modular progress tracking... ---
-        function renderLearningView() {
-            return `
-                <div class="space-y-6">
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Learning Hub</h2>
-                            <p class="text-slate-400 text-sm">Complete modular courses, gain scores, and earn verifiable achievement badges.</p>
-                        </div>
-                        <div class="glass-panel px-4 py-2 rounded-2xl flex items-center space-x-3">
-                            <i class="fa-solid fa-coins text-amber-400 text-lg"></i>
-                            <div>
-                                <p class="text-[10px] text-slate-400 uppercase font-semibold">Reward Points</p>
-                                <p class="text-sm font-bold text-white">${appState.user ? appState.user.points : 0} PTS</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        ${appState.learningModules.map(mod => `
-                            <div class="glass-panel rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                                <div class="space-y-2 max-w-xl">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-400 border border-violet-500/30">${mod.category}</span>
-                                        <span class="text-xs text-slate-400 font-medium">${mod.status}</span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-white">${mod.title}</h3>
-                                    <div class="flex items-center space-x-3 pt-1">
-                                        <div class="w-48 bg-slate-800 rounded-full h-2 overflow-hidden">
-                                            <div class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-2 rounded-full" style="width: ${mod.progress}%"></div>
-                                        </div>
-                                        <span class="text-xs font-semibold text-cyan-400">${mod.progress}%</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-4 w-full md:w-auto justify-between md:justify-end">
-                                    <div class="text-right">
-                                        <p class="text-[10px] text-slate-400 uppercase font-semibold">Badge Earned</p>
-                                        <p class="text-xs font-bold text-emerald-400">${mod.badge}</p>
-                                    </div>
-                                    <button onclick="openLearningModule('${mod.id}')" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold border border-slate-700 transition">
-                                        ${mod.progress === 100 ? 'Review Module' : 'Continue Learning'}
-                                    </button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- STREAMING_CHUNK:Rendering Contest Hub and Project Corner with rich modals... ---
-        function renderContestsView() {
-            return `
-                <div class="space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Contest Hub</h2>
-                        <p class="text-slate-400 text-sm">Participate in school and national maker competitions, hackathons, and challenges.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        ${appState.contests.map(c => `
-                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col">
-                                <div class="h-48 overflow-hidden relative">
-                                    <img src="${c.poster}" alt="${c.title}" class="w-full h-full object-cover">
-                                    <div class="absolute top-3 right-3 bg-dark/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-violet-400 border border-slate-700">${c.date}</div>
-                                </div>
-                                <div class="p-6 flex flex-col flex-grow space-y-3">
-                                    <h3 class="text-lg font-bold text-white">${c.title}</h3>
-                                    <p class="text-slate-400 text-sm flex-grow">${c.description}</p>
-                                    <button onclick="openContestModal(${c.id})" class="w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow-lg transition">Register / Submit Entry</button>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderProjectsView() {
-            return `
-                <div class="space-y-6">
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Project Corner</h2>
-                            <p class="text-slate-400 text-sm">Explore student maker projects, circuits, and IoT innovations.</p>
-                        </div>
-                        ${appState.user ? `<button onclick="openAddProjectModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-lg hover:opacity-90 transition flex items-center space-x-2"><i class="fa-solid fa-plus"></i><span>Submit New Project</span></button>` : `<button onclick="openAuthModal()" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700">Sign in to Submit Project</button>`}
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        ${appState.projects.map(p => `
-                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col hover:border-cyan-500/50 transition duration-300 cursor-pointer" onclick="openProjectDetail(${p.id})">
-                                <div class="h-44 overflow-hidden relative bg-slate-900">
-                                    <img src="${p.galleryURLs[0]}" alt="${p.title}" class="w-full h-full object-cover">
-                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">${p.status}</span>
-                                </div>
-                                <div class="p-5 flex flex-col flex-grow space-y-3">
-                                    <div class="flex flex-wrap gap-1">
-                                        ${p.tagging.split(',').map(t => `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300">${t.trim()}</span>`).join('')}
-                                    </div>
-                                    <h3 class="text-base font-bold text-white">${p.title}</h3>
-                                    <p class="text-slate-400 text-xs line-clamp-2 flex-grow">${p.description}</p>
-                                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                                        <span>By ${p.createdBy}</span>
-                                        <div class="flex items-center space-x-1 text-rose-400">
-                                            <i class="fa-solid fa-heart"></i>
-                                            <span>${p.likeCount}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- STREAMING_CHUNK:Rendering Marketplace with reward points and cart checkout... ---
-        function renderMarketplaceView() {
-            const cartCount = appState.cart.reduce((sum, item) => sum + item.qty, 0);
-            return `
-                <div class="space-y-6">
-                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-2xl font-bold text-white">Marketplace & Rewards</h2>
-                            <p class="text-slate-400 text-sm">Purchase electronic components and maker kits using cash or earned reward points.</p>
-                        </div>
-                        <button onclick="openCartModal()" class="relative px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-semibold shadow-lg hover:opacity-90 transition flex items-center space-x-2">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                            <span>Shopping Cart</span>
-                            ${cartCount > 0 ? `<span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">${cartCount}</span>` : ''}
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        ${appState.marketplace.map(item => `
-                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col">
-                                <div class="h-48 overflow-hidden relative bg-slate-900">
-                                    <img src="${item.imageURL}" alt="${item.name}" class="w-full h-full object-cover">
-                                    <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-900/80 text-cyan-400 border border-slate-700">Stock: ${item.stock}</span>
-                                </div>
-                                <div class="p-5 flex flex-col flex-grow space-y-3">
-                                    <h3 class="text-base font-bold text-white">${item.name}</h3>
-                                    <p class="text-slate-400 text-xs line-clamp-2 flex-grow">${item.description}</p>
-                                    <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-                                        <div>
-                                            <p class="text-sm font-extrabold text-white">RM ${item.priceRM.toFixed(2)}</p>
-                                            <p class="text-[10px] text-amber-400 font-semibold">${item.pointsValue} Points</p>
-                                        </div>
-                                        <button onclick="addToCart('${item.id}')" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Add to Cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- STREAMING_CHUNK:Rendering Member Profile Management and Image Compressor... ---
-        function renderProfileView() {
-            if (!appState.user) return `<div class="text-center py-20 space-y-4"><h3 class="text-xl font-bold text-white">Please sign in to access your profile.</h3><button onclick="openAuthModal()" class="px-6 py-2.5 rounded-xl bg-cyan-500 text-white text-sm font-semibold">Sign In / Register</button></div>`;
-            const user = appState.user;
-            return `
-                <div class="space-y-6 max-w-4xl mx-auto">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 flex flex-col md:flex-row items-center gap-6">
-                        <div class="relative">
-                            <div class="w-28 h-28 rounded-2xl overflow-hidden bg-slate-800 border-2 border-cyan-500/50 shadow-xl">
-                                <img id="profile-avatar-preview" src="${user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'}" alt="Avatar" class="w-full h-full object-cover">
-                            </div>
-                            <label class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white flex items-center justify-center cursor-pointer shadow-lg transition" title="Change Avatar">
-                                <i class="fa-solid fa-camera text-xs"></i>
-                                <input type="file" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
-                            </label>
-                        </div>
-                        <div class="flex-grow text-center md:text-left space-y-2">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
-                                <div>
-                                    <h2 class="text-2xl font-bold text-white">${user.fullName}</h2>
-                                    <p class="text-xs text-slate-400">@${user.username} • ${user.email}</p>
-                                </div>
-                                <span class="px-3 py-1 rounded-full text-xs font-bold ${user.role === 'Active Member' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-300'}">${user.role}</span>
-                            </div>
-                            <div class="flex flex-wrap gap-4 pt-2 justify-center md:justify-start">
-                                <div class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800">
-                                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Membership Status</p>
-                                    <p class="text-xs font-bold text-cyan-400">Active until Dec 2026</p>
-                                </div>
-                                <button onclick="openMembershipModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-semibold shadow hover:opacity-90 transition flex items-center space-x-2">
-                                    <i class="fa-solid fa-id-card"></i>
-                                    <span>Renew / Apply Membership</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PROFILE TABS / SECTIONS -->
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 space-y-6">
-                        <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-4">Personal Information & Security</h3>
-                        <form onsubmit="updateProfile(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Full Name</label>
-                                <input type="text" id="prof-fullname" value="${user.fullName || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">IC Number (No. KP)</label>
-                                <input type="text" id="prof-ic" value="${user.icNumber || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="080101-14-1234">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">School</label>
-                                <input type="text" id="prof-school" value="${user.school || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="SMK Damansara Jaya">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">WhatsApp Contact</label>
-                                <input type="text" id="prof-whatsapp" value="${user.whatsapp || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="+60123456789">
-                            </div>
-                            <div class="md:col-span-2 flex justify-end pt-2">
-                                <button type="submit" class="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Save Changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- STREAMING_CHUNK:Rendering Messaging Inbox and Modal Dialog systems... ---
-        function renderAuthHeader() {
-            const container = document.getElementById('auth-header-container');
-            if (appState.user) {
-                container.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <button onclick="switchTab('profile')" class="flex items-center space-x-2 bg-slate-900 border border-slate-800 hover:border-cyan-500/50 px-3 py-1.5 rounded-xl transition">
-                            <img src="${appState.user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-7 h-7 rounded-lg object-cover">
-                            <span class="text-xs font-semibold text-white hidden sm:inline">${appState.user.username}</span>
-                        </button>
-                        <button onclick="logoutUser()" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-rose-400 transition" title="Log Out">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                        </button>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <button onclick="openAuthModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-lg hover:opacity-90 transition">
-                        Sign In / Register
-                    </button>
-                `;
-            }
-        }
-
-        // --- MODAL DIALOG CONTROLLERS ---
-        function closeModal() {
-            document.getElementById('modal-container').innerHTML = '';
-        }
-
-        function openAuthModal() {
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-md w-full space-y-6 relative border border-slate-700 animate-fadeIn">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Welcome to RIDM Hub</h3>
-                            <p class="text-xs text-slate-400 mt-1">Sign in with your account or register as a new member.</p>
-                        </div>
-                        <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Username</label>
-                                <input type="text" id="auth-username" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. smartmaker">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Password</label>
-                                <input type="password" id="auth-password" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="••••••••">
-                            </div>
-                            <div class="pt-2 flex gap-3">
-                                <button type="submit" class="flex-1 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg transition">Sign In</button>
-                                <button type="button" onclick="registerUser()" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">Register</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const username = document.getElementById('auth-username').value;
-            appState.user = {
-                username: username,
-                fullName: username.charAt(0).toUpperCase() + username.slice(1),
-                role: 'Active Member',
-                points: 350,
-                email: `${username}@ridm.edu.my`,
-                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'
+                Array.from(files).forEach(file => {
+                    if (file.size > 10 * 1024 * 1024) {
+                        alertModal('File Too Large', `File "${file.name}" exceeds the 10MB size limit.`);
+                        return;
+                    }
+                    if (!file.type.startsWith('image/')) {
+                        alertModal('Invalid File Type', `File "${file.name}" is not a valid image.`);
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        uploadedImages.push(e.target.result);
+                        renderPreviews();
+                        if (onImagesUpdated) onImagesUpdated(uploadedImages);
+                    };
+                    reader.readAsDataURL(file);
+                });
             };
-            localStorage.setItem('ridm_user', JSON.stringify(appState.user));
-            closeModal();
-            renderAuthHeader();
-            renderCurrentView();
-            showToast(`Welcome back, ${appState.user.fullName}!`);
+
+            const renderPreviews = () => {
+                previewContainer.innerHTML = uploadedImages.map((imgSrc, idx) => `
+                    <div class="relative w-20 h-20 rounded-xl overflow-hidden border border-cyan-500/40 bg-slate-950 group">
+                        <img src="${escapeAttr(imgSrc)}" class="w-full h-full object-cover">
+                        <button type="button" onclick="removeUploadedImage('${dropZoneId}', ${idx})" class="absolute top-1 right-1 bg-rose-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                `).join('');
+            };
+
+            dropZone.onclick = () => fileInput.click();
+            fileInput.onchange = (e) => handleFiles(e.target.files);
+
+            dropZone.ondragover = (e) => { e.preventDefault(); dropZone.classList.add('border-cyan-400', 'bg-cyan-950/20'); };
+            dropZone.ondragleave = (e) => { e.preventDefault(); dropZone.classList.remove('border-cyan-400', 'bg-cyan-950/20'); };
+            dropZone.ondrop = (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-cyan-400', 'bg-cyan-950/20');
+                if (e.dataTransfer.files) handleFiles(e.dataTransfer.files);
+            };
+
+            window.uploaderInstances = window.uploaderInstances || {};
+            window.uploaderInstances[dropZoneId] = {
+                getImages: () => uploadedImages,
+                setImages: (imgs) => { uploadedImages = imgs || []; renderPreviews(); },
+                clear: () => { uploadedImages = []; renderPreviews(); }
+            };
         }
 
-        function registerUser() {
-            const username = document.getElementById('auth-username').value;
-            if(!username) {
-                showToast('Please enter a username to register.', 'error');
+        function removeUploadedImage(dropZoneId, idx) {
+            if (window.uploaderInstances && window.uploaderInstances[dropZoneId]) {
+                let imgs = window.uploaderInstances[dropZoneId].getImages();
+                imgs.splice(idx, 1);
+                window.uploaderInstances[dropZoneId].setImages(imgs);
+            }
+        }
+
+        function escapeAttr(str) {
+            if (!str) return '';
+            return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye';
+            }
+        }
+
+        function isGAS() {
+            return typeof google !== 'undefined' && google.script && google.script.run;
+        }
+
+        window.onload = function() {
+            loadServerData();
+        };
+
+        function loadServerData() {
+            if (isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        if (res.success) {
+                            appData = res.data;
+                            renderAll();
+                        } else {
+                            alertModal('Sync Error', res.message || 'Failed to load sheet data.');
+                        }
+                    })
+                    .withFailureHandler(err => {
+                        console.error(err);
+                        loadMockFallback();
+                    })
+                    .getData({});
+            } else {
+                loadMockFallback();
+            }
+        }
+
+        function loadMockFallback() {
+            appData.Inventory = [
+                { ItemID: 'INV-1', ItemName: 'micro:bit V2 Kit', Category: 'Microcontroller', TotalStock: 15, AvailableStock: 12, Status: 'Available', ImageURL: 'https://placehold.co/400x300/06b6d4/ffffff?text=micro:bit' },
+                { ItemID: 'INV-2', ItemName: 'Arduino Uno Starter Pack', Category: 'Microcontroller', TotalStock: 10, AvailableStock: 4, Status: 'Available', ImageURL: 'https://placehold.co/400x300/8b5cf6/ffffff?text=Arduino' }
+            ];
+            appData.Projects = [
+                { ProjectID: 'PROJ-1', ProjectTitle: 'Smart Plant Watering IoT System', Description: 'Automated soil moisture monitoring with ESP32.', Tagging: 'IoT, ESP32', CreatedBy: 'AlexTan', LikeCount: 24, Status: 'Approved', GalleryURLs: 'https://placehold.co/600x400/10b981/ffffff?text=Smart+Plant' }
+            ];
+            appData.Marketplace = [
+                { MarketItemID: 'MKT-1', ItemName: 'OLED Display Module 0.96"', Description: 'I2C 128x64 white OLED screen.', PriceRM: 15.00, PointsValue: 150, Stock: 25, ImageURL: 'https://placehold.co/400x300/06b6d4/ffffff?text=OLED' }
+            ];
+            appData.LearningProgress = [
+                { ModuleID: 'MOD-1', Title: 'Intro to micro:bit & Sensors', CompletionPercentage: 100, BadgesEarned: 'micro:bit Pioneer', Status: 'Completed' }
+            ];
+            appData.Messages = [
+                { MessageID: 'MSG-1', SenderUsername: 'Admin', RecipientUsername: 'AlexTan', Subject: 'Welcome', Body: 'Welcome to RIDM Hub!', Timestamp: '2026-10-11' }
+            ];
+            renderAll();
+        }
+
+        function renderAll() {
+            renderInventory();
+            renderLearning();
+            renderContests();
+            renderProjects();
+            renderMarketplace();
+            renderMessages();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById('tab-' + tabId);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-cyan-400', 'bg-cyan-950/80', 'border', 'border-cyan-500/30');
+                btn.classList.add('text-slate-400');
+                const span = btn.querySelector('span');
+                if(span) {
+                    span.classList.remove('max-w-xs', 'opacity-100', 'ml-2');
+                    span.classList.add('max-w-0', 'opacity-0', 'ml-0');
+                }
+                if(btn.dataset.tab === tabId) {
+                    btn.classList.add('text-cyan-400', 'bg-cyan-950/80', 'border', 'border-cyan-500/30');
+                    btn.classList.remove('text-slate-400');
+                    if(span) {
+                        span.classList.remove('max-w-0', 'opacity-0', 'ml-0');
+                        span.classList.add('max-w-xs', 'opacity-100', 'ml-2');
+                    }
+                }
+            });
+
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                btn.classList.remove('text-cyan-400');
+                btn.classList.add('text-slate-400');
+                if(btn.dataset.tab === tabId) {
+                    btn.classList.add('text-cyan-400');
+                    btn.classList.remove('text-slate-400');
+                }
+            });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            if(html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                body.className = 'bg-slate-50 text-slate-900 min-h-screen flex flex-col transition-colors duration-300';
+                icon.className = 'fa-solid fa-sun text-amber-500';
+            } else {
+                html.classList.add('dark');
+                body.className = 'bg-darkBg text-slate-100 min-h-screen flex flex-col transition-colors duration-300';
+                icon.className = 'fa-solid fa-moon';
+            }
+        }
+
+        function openModal(id) { 
+            const m = document.getElementById(id);
+            if(m) m.classList.remove('hidden'); 
+        }
+        function closeModal(id) { 
+            const m = document.getElementById(id);
+            if(m) m.classList.add('hidden'); 
+        }
+
+        function renderInventory() {
+            const grid = document.getElementById('inventoryGrid');
+            if(!grid) return;
+            const items = appData.Inventory || [];
+            const isAdmin = currentUser && (String(currentUser.Role || '').trim().toLowerCase() === 'admin' || currentUser.Username === 'admin');
+            
+            if(items.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-8">No inventory items found in Sheet.Inventory.</p>';
                 return;
             }
-            appState.user = {
-                username: username,
-                fullName: username,
-                role: 'Active Member',
-                points: 100,
-                email: `${username}@ridm.edu.my`,
-                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'
-            };
-            localStorage.setItem('ridm_user', JSON.stringify(appState.user));
-            closeModal();
-            renderAuthHeader();
-            renderCurrentView();
-            showToast('Registration successful! Welcome to RIDM Hub.');
+            grid.innerHTML = items.map(item => 
+                '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl flex flex-col justify-between">' +
+                    '<div>' +
+                        '<div class="h-40 overflow-hidden relative">' +
+                            '<img src="' + escapeAttr(item.ImageURL || 'https://placehold.co/400x300/06b6d4/ffffff?text=Item') + '" class="w-full h-full object-cover" alt="' + escapeAttr(item.ItemName) + '">' +
+                            '<span class="absolute top-3 right-3 px-2 py-0.5 text-xs font-bold rounded-lg ' + (Number(item.AvailableStock) > 0 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border border-rose-500/40') + '">' + escapeAttr(item.Status || 'Available') + '</span>' +
+                        '</div>' +
+                        '<div class="p-4 space-y-2">' +
+                            '<h4 class="font-bold text-base text-white">' + escapeAttr(item.ItemName) + '</h4>' +
+                            '<p class="text-xs text-slate-400">Category: ' + escapeAttr(item.Category) + '</p>' +
+                            '<p class="text-xs text-slate-300 font-semibold">Available Stock: ' + item.AvailableStock + ' / ' + item.TotalStock + '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="p-4 pt-0 space-y-2">' +
+                        '<button onclick="requestLending(\'' + escapeAttr(item.ItemID) + '\')" class="w-full py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-all">Request Lending</button>' +
+                        (isAdmin ? '<div class="flex space-x-2"><button onclick="openInventoryModal(\'' + escapeAttr(item.ItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold">Edit</button><button onclick="deleteInventoryItem(\'' + escapeAttr(item.ItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-semibold">Delete</button></div>' : '') +
+                    '</div>' +
+                '</div>'
+            ).join('');
         }
 
-        function logoutUser() {
-            appState.user = null;
-            localStorage.removeItem('ridm_user');
-            renderAuthHeader();
-            renderCurrentView();
-            showToast('Logged out successfully.');
-        }
-
-        // Profile Image Compressor (256 x 256)
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = 256;
-                    canvas.height = 256;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, 256, 256);
-                    const base64String = canvas.toDataURL('image/jpeg', 0.85);
-                    appState.user.avatar = base64String;
-                    localStorage.setItem('ridm_user', JSON.stringify(appState.user));
-                    document.getElementById('profile-avatar-preview').src = base64String;
-                    renderAuthHeader();
-                    showToast('Profile avatar updated and compressed successfully!');
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function updateProfile(e) {
-            e.preventDefault();
-            appState.user.fullName = document.getElementById('prof-fullname').value;
-            appState.user.icNumber = document.getElementById('prof-ic').value;
-            appState.user.school = document.getElementById('prof-school').value;
-            appState.user.whatsapp = document.getElementById('prof-whatsapp').value;
-            localStorage.setItem('ridm_user', JSON.stringify(appState.user));
-            renderAuthHeader();
-            showToast('Profile information updated successfully!');
-        }
-
-        // Membership Renewal Modal
-        function openMembershipModal() {
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Membership Application & Renewal</h3>
-                            <p class="text-xs text-slate-400 mt-1">Extend your active status to access asset lending & premium maker resources.</p>
-                        </div>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Duration (Months)</label>
-                                <select id=" membership-months" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
-                                    <option value="3">3 Months (RM 15)</option>
-                                    <option value="6">6 Months (RM 25)</option>
-                                    <option value="12" selected>12 Months (RM 45)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Referral Code (Optional)</label>
-                                <input type="text" id="membership-referral" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. TEACHER_ALI">
-                            </div>
-                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1">
-                                <p class="font-semibold text-cyan-400">Payment Instructions:</p>
-                                <p>Transfer payment via Online Banking to School PIBG Account (Acc: 1234567890). Upload receipt below.</p>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Upload Payment Receipt (PDF / Image)</label>
-                                <input type="file" id="membership-receipt" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-600">
-                            </div>
-                            <button onclick="submitMembershipApplication()" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg transition">Submit Application for Approval</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function submitMembershipApplication() {
-            closeModal();
-            showToast('Membership application submitted successfully! Notification sent to Admin.');
-        }
-
-        // Cart & Checkout
-        function addToCart(itemId) {
-            const item = appState.marketplace.find(i => i.id === itemId);
-            if(!item) return;
-            const existing = appState.cart.find(i => i.id === itemId);
-            if(existing) {
-                existing.qty++;
-            } else {
-                appState.cart.push({...item, qty: 1});
+        function renderLearning() {
+            const grid = document.getElementById('learningModulesGrid');
+            if(!grid) return;
+            const items = appData.LearningProgress || appData.Learning || [];
+            if(items.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-8">No learning modules found.</p>';
+                return;
             }
-            localStorage.setItem('ridm_cart', JSON.stringify(appState.cart));
-            showToast(`Added ${item.name} to shopping cart.`);
-            renderCurrentView();
+            grid.innerHTML = items.map(mod => 
+                '<div class="rounded-2xl bg-darkCard border border-darkBorder p-6 space-y-4 shadow-xl">' +
+                    '<div class="flex justify-between items-start">' +
+                        '<h4 class="font-bold text-lg text-white">' + escapeAttr(mod.Title) + '</h4>' +
+                        '<span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">' + escapeAttr(mod.Status || 'In Progress') + '</span>' +
+                    '</div>' +
+                    '<div class="space-y-1">' +
+                        '<div class="flex justify-between text-xs text-slate-400">' +
+                            '<span>Progress</span>' +
+                            '<span>' + (mod.CompletionPercentage || 0) + '%</span>' +
+                        '</div>' +
+                        '<div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">' +
+                            '<div class="h-full bg-cyan-500 rounded-full" style="width: ' + (mod.CompletionPercentage || 0) + '%"></div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<p class="text-xs text-slate-400"><i class="fa-solid fa-award text-amber-400 mr-1"></i> Reward Badge: <span class="text-white font-medium">' + escapeAttr(mod.BadgesEarned || 'Maker') + '</span></p>' +
+                    '<button onclick="alertModal(\'Module Content\', \'Interactive maker lessons loaded.\')" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-slate-700">Continue Learning</button>' +
+                '</div>'
+            ).join('');
+        }
+
+        function renderContests() {
+            const grid = document.getElementById('contestsGrid');
+            if(!grid) return;
+            grid.innerHTML = 
+                '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl">' +
+                    '<div class="h-48 overflow-hidden"><img src="https://placehold.co/600x400/06b6d4/ffffff?text=Robotics+Challenge" class="w-full h-full object-cover"></div>' +
+                    '<div class="p-5 space-y-2">' +
+                        '<h4 class="font-bold text-lg text-white">National STEM Robotics Challenge 2026</h4>' +
+                        '<p class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> Nov 20-22, 2026</p>' +
+                        '<button onclick="alertModal(\'Contest Hub\', \'Registration open for all active members.\')" class="w-full mt-2 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">View Contest Details</button>' +
+                    '</div>' +
+                '</div>';
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            if(!grid) return;
+            const items = appData.Projects || [];
+            if(items.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-8">No projects found in Sheet.Projects.</p>';
+                return;
+            }
+            grid.innerHTML = items.map(p => 
+                '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl flex flex-col justify-between">' +
+                    '<div>' +
+                        '<div class="h-44 overflow-hidden">' +
+                            '<img src="' + escapeAttr(p.GalleryURLs || 'https://placehold.co/600x400/10b981/ffffff?text=Project') + '" class="w-full h-full object-cover" alt="Project">' +
+                        '</div>' +
+                        '<div class="p-5 space-y-2">' +
+                            '<h4 class="font-bold text-lg text-white">' + escapeAttr(p.ProjectTitle) + '</h4>' +
+                            '<p class="text-xs text-slate-400 line-clamp-2">' + escapeAttr(p.Description) + '</p>' +
+                            '<div class="flex flex-wrap gap-1 pt-1">' +
+                                (p.Tagging || '').split(',').map(t => '<span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-cyan-300 border border-slate-700">' + escapeAttr(t.trim()) + '</span>').join('') +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="p-5 pt-0 flex items-center justify-between">' +
+                        '<span class="text-xs text-slate-400"><i class="fa-solid fa-heart text-rose-500 mr-1"></i> ' + (p.LikeCount || 0) + ' Likes</span>' +
+                        '<button onclick="openProjectDetail(\'' + escapeAttr(p.ProjectID) + '\')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 font-semibold text-xs border border-slate-700">View Project</button>' +
+                    '</div>' +
+                '</div>'
+            ).join('');
+        }
+
+        function renderMarketplace() {
+            const grid = document.getElementById('marketplaceGrid');
+            if(!grid) return;
+            const items = appData.Marketplace || [];
+            const isAdmin = currentUser && (String(currentUser.Role || '').trim().toLowerCase() === 'admin' || currentUser.Username === 'admin');
+
+            if(items.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-slate-400 col-span-full text-center py-8">No marketplace items found in Sheet.Marketplace.</p>';
+                return;
+            }
+            grid.innerHTML = items.map(m => 
+                '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl flex flex-col justify-between">' +
+                    '<div>' +
+                        '<div class="h-40 overflow-hidden">' +
+                            '<img src="' + escapeAttr(m.ImageURL || 'https://placehold.co/400x300/06b6d4/ffffff?text=Market') + '" class="w-full h-full object-cover" alt="Market Item">' +
+                        '</div>' +
+                        '<div class="p-4 space-y-2">' +
+                            '<h4 class="font-bold text-base text-white">' + escapeAttr(m.ItemName) + '</h4>' +
+                            '<p class="text-xs text-slate-400 line-clamp-2">' + escapeAttr(m.Description) + '</p>' +
+                            '<div class="flex justify-between items-center text-xs font-semibold pt-1">' +
+                                '<span class="text-cyan-400">RM ' + Number(m.PriceRM || 0).toFixed(2) + '</span>' +
+                                '<span class="text-violet-400">' + (m.PointsValue || 0) + ' Pts</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="p-4 pt-0 space-y-2">' +
+                        '<button onclick="addToCart(\'' + escapeAttr(m.MarketItemID) + '\')" class="w-full py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-xs shadow">Add to Cart</button>' +
+                        (isAdmin ? '<div class="flex space-x-2"><button onclick="openMarketplaceModal(\'' + escapeAttr(m.MarketItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold">Edit</button><button onclick="deleteMarketItem(\'' + escapeAttr(m.MarketItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-semibold">Delete</button></div>' : '') +
+                    '</div>' +
+                '</div>'
+            ).join('');
+        }
+
+        function renderMessages() {
+            const list = document.getElementById('messagesList');
+            if(!list) return;
+            const items = Array.isArray(appData.Messages) ? appData.Messages : [];
+            const userMessages = currentUser ? items.filter(m => {
+                const recipient = String(m.RecipientUsername || '').trim().toLowerCase();
+                const sender = String(m.SenderUsername || '').trim().toLowerCase();
+                const current = String(currentUser.Username || '').trim().toLowerCase();
+                return recipient === current || sender === current;
+            }) : items;
+            
+            if(userMessages.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No messages in inbox.</p>';
+                return;
+            }
+            list.innerHTML = userMessages.map(msg => {
+                let dateStr = '';
+                if (msg.Timestamp) {
+                    try {
+                        const d = new Date(msg.Timestamp);
+                        dateStr = !isNaN(d.getTime()) ? d.toLocaleString() : String(msg.Timestamp);
+                    } catch(e) {
+                        dateStr = String(msg.Timestamp);
+                    }
+                }
+                return '<div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">' +
+                    '<div class="flex justify-between text-xs text-slate-400">' +
+                        '<span>From: <strong class="text-cyan-400">' + escapeAttr(msg.SenderUsername) + '</strong> | To: <strong class="text-cyan-400">' + escapeAttr(msg.RecipientUsername) + '</strong></span>' +
+                        '<span>' + escapeAttr(dateStr) + '</span>' +
+                    '</div>' +
+                    '<h5 class="font-bold text-sm text-white">' + escapeAttr(msg.Subject || 'No Subject') + '</h5>' +
+                    '<p class="text-xs text-slate-300">' + escapeAttr(msg.Body || '') + '</p>' +
+                '</div>';
+            }).join('');
+        }
+
+        function addToCart(marketItemID) {
+            const m = (appData.Marketplace || []).find(item => item.MarketItemID === marketItemID);
+            if(!m) return;
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to add items to your cart.');
+                openModal('loginModal');
+                return;
+            }
+            cart.push({ id: m.MarketItemID, name: m.ItemName, price: Number(m.PriceRM || 0), points: Number(m.PointsValue || 0) });
+            const badge = document.getElementById('cartBadge');
+            const countHeader = document.getElementById('cartCountHeader');
+            if(badge) badge.innerText = cart.length;
+            if(countHeader) countHeader.innerText = cart.length;
+            alertModal('Cart Updated', m.ItemName + ' added to cart successfully.');
         }
 
         function openCartModal() {
-            const totalRM = appState.cart.reduce((sum, item) => sum + (item.priceRM * item.qty), 0);
-            const totalPoints = appState.cart.reduce((sum, item) => sum + (item.pointsValue * item.qty), 0);
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Shopping Cart & Checkout</h3>
-                            <p class="text-xs text-slate-400 mt-1">Review your selected marketplace items.</p>
-                        </div>
-                        <div class="space-y-3 max-h-60 overflow-y-auto">
-                            ${appState.cart.length === 0 ? '<p class="text-xs text-slate-400 text-center py-6">Your cart is empty.</p>' : appState.cart.map(i => `
-                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
-                                    <div>
-                                        <p class="font-bold text-white">${i.name}</p>
-                                        <p class="text-cyan-400">Qty: ${i.qty} • RM ${i.priceRM} / ${i.pointsValue} Pts</p>
-                                    </div>
-                                    <button onclick="removeFromCart('${i.id}')" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            `).join('')}
-                        </div>
-                        ${appState.cart.length > 0 ? `
-                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between font-bold text-sm">
-                                <span>Total Payable:</span>
-                                <span class="text-cyan-400">RM ${totalRM.toFixed(2)} or ${totalPoints} Pts</span>
-                            </div>
-                            <div class="flex gap-3">
-                                <button onclick="checkoutCart('cash')" class="flex-1 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Check Out with Cash (RM)</button>
-                                <button onclick="checkoutCart('points')" class="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow transition">Check Out with Points</button>
-                            </div>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
+            const list = document.getElementById('cartItemsList');
+            if(!list) return;
+            if(cart.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-400 text-center py-6">Your cart is empty.</p>';
+                document.getElementById('cartTotalPrice').innerText = 'RM 0.00 / 0 Points';
+            } else {
+                let totalRM = cart.reduce((sum, i) => sum + i.price, 0);
+                let totalPts = cart.reduce((sum, i) => sum + i.points, 0);
+                list.innerHTML = cart.map((item, idx) => 
+                    '<div class="flex justify-between items-center p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">' +
+                        '<div>' +
+                            '<p class="font-bold text-white">' + escapeAttr(item.name) + '</p>' +
+                            '<p class="text-slate-400">RM ' + item.price.toFixed(2) + ' | ' + item.points + ' Points</p>' +
+                        '</div>' +
+                        '<button onclick="removeFromCart(' + idx + ')" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>' +
+                    '</div>'
+                ).join('');
+                document.getElementById('cartTotalPrice').innerText = 'RM ' + totalRM.toFixed(2) + ' / ' + totalPts + ' Points';
+            }
+            openModal('cartModal');
         }
 
-        function removeFromCart(itemId) {
-            appState.cart = appState.cart.filter(i => i.id !== itemId);
-            localStorage.setItem('ridm_cart', JSON.stringify(appState.cart));
+        function removeFromCart(idx) {
+            cart.splice(idx, 1);
+            const badge = document.getElementById('cartBadge');
+            const countHeader = document.getElementById('cartCountHeader');
+            if(badge) badge.innerText = cart.length;
+            if(countHeader) countHeader.innerText = cart.length;
             openCartModal();
         }
 
         function checkoutCart(method) {
-            appState.cart = [];
-            localStorage.removeItem('ridm_cart');
-            closeModal();
-            renderCurrentView();
-            showToast(`Order placed successfully via ${method.toUpperCase()}! Order ID #RIDM-${Math.floor(100000 + Math.random() * 900000)}`);
+            if(cart.length === 0) {
+                alertModal('Cart Empty', 'Your cart is empty.');
+                return;
+            }
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to checkout.');
+                openModal('loginModal');
+                return;
+            }
+            const totalPaid = cart.reduce((sum, i) => sum + i.price, 0);
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Order Confirmed', res.message || 'Order successfully processed.');
+                        cart = [];
+                        const badge = document.getElementById('cartBadge');
+                        const countHeader = document.getElementById('cartCountHeader');
+                        if(badge) badge.innerText = 0;
+                        if(countHeader) countHeader.innerText = 0;
+                        closeModal('cartModal');
+                        loadServerData();
+                    })
+                    .checkoutOrder({
+                        username: currentUser.Username,
+                        items: cart,
+                        totalPaid: totalPaid,
+                        paymentMethod: method
+                    });
+            } else {
+                alertModal('Checkout Successful', 'Order placed successfully (Mock Mode).');
+                cart = [];
+                const badge = document.getElementById('cartBadge');
+                const countHeader = document.getElementById('cartCountHeader');
+                if(badge) badge.innerText = 0;
+                if(countHeader) countHeader.innerText = 0;
+                closeModal('cartModal');
+            }
         }
 
-        // Add Project Modal
-        function openAddProjectModal() {
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-2xl w-full space-y-6 relative border border-slate-700 max-h-[90vh] overflow-y-auto">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Submit New Maker Project</h3>
-                            <p class="text-xs text-slate-400 mt-1">Share your robotics & IoT creation with the RIDM community.</p>
-                        </div>
-                        <form onsubmit="submitProject(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Project Title</label>
-                                <input type="text" id="proj-title" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. Smart IoT Plant Watering System">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Description</label>
-                                <textarea id="proj-desc" rows="3" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="Describe your project architecture and features..."></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-2">Tagging</label>
-                                <div class="flex flex-wrap gap-3 text-xs">
-                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="micro:bit"><span>micro:bit</span></label>
-                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="Arduino"><span>Arduino</span></label>
-                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="ESP32"><span>ESP32</span></label>
-                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="IoT"><span>IoT</span></label>
-                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="RBT Project"><span>RBT Project</span></label>
-                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="REKA:BIT"><span>REKA:BIT</span></label>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Electronic Components Used</label>
-                                <input type="text" id="proj-components" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. ESP32, Ultrasonic Sensor, Relay">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-slate-400 mb-1">Gallery Images (Max 5, <= 10MB total)</label>
-                                <input type="file" multiple accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500 file:text-white">
-                            </div>
-                            <div class="flex items-center space-x-2 pt-2">
-                                <input type="checkbox" id="proj-agreement" required class="rounded bg-slate-900 border-slate-800 text-cyan-500">
-                                <label for="proj-agreement" class="text-xs text-slate-300">I confirm this project is my own original work.</label>
-                            </div>
-                            <button type="submit" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg transition">Submit Project for Approval</button>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        function submitProject(e) {
+        function handleLoginSubmit(e) {
             e.preventDefault();
-            const newProj = {
-                id: appState.projects.length + 1,
-                title: document.getElementById('proj-title').value,
-                description: document.getElementById('proj-desc').value,
-                tagging: 'IoT, micro:bit',
-                componentsUsed: document.getElementById('proj-components').value,
-                totalCost: 'RM 35.00',
-                galleryURLs: ['https://images.unsplash.com/photo-1518770660439-4636190af475?w=600'],
-                attachmentURLs: [],
-                groupMembers: 'Self',
-                createdBy: appState.user ? appState.user.username : 'Guest',
-                approvedBy: 'Pending Review',
-                likeCount: 0,
-                status: 'Pending'
-            };
-            appState.projects.unshift(newProj);
-            closeModal();
-            switchTab('projects');
-            showToast('Project submitted successfully! Awaiting teacher approval.');
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        if(res.success) {
+                            currentUser = res.user;
+                            updateAuthUI();
+                            closeModal('loginModal');
+                            alertModal('Welcome Back', 'Successfully signed in as ' + currentUser.Username);
+                        } else {
+                            alertModal('Sign In Failed', res.message);
+                        }
+                    })
+                    .login({ username, password });
+            } else {
+                currentUser = { Username: username, Role: username === 'admin' ? 'Admin' : 'Normal Member' };
+                updateAuthUI();
+                closeModal('loginModal');
+                alertModal('Welcome Back', 'Signed in as ' + username + ' (Mock Mode).');
+            }
         }
 
-        function openProjectDetail(id) {
-            const p = appState.projects.find(item => item.id === id);
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const fullName = document.getElementById('regFullName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        if(res.success) {
+                            alertModal('Registration Successful', res.message);
+                            closeModal('registerModal');
+                            openModal('loginModal');
+                        } else {
+                            alertModal('Registration Failed', res.message);
+                        }
+                    })
+                    .register({ username, fullName, email, password });
+            } else {
+                alertModal('Registered', 'Account created successfully (Mock Mode).');
+                closeModal('registerModal');
+                openModal('loginModal');
+            }
+        }
+
+        function handleMembershipSubmit(e) {
+            e.preventDefault();
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to apply for membership.');
+                openModal('loginModal');
+                return;
+            }
+            const monthsRequested = document.getElementById('membershipMonths').value;
+            const referralCode = document.getElementById('membershipReferral').value;
+            const receiptURL = document.getElementById('membershipReceiptURL').value;
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Application Submitted', res.message);
+                        closeModal('membershipModal');
+                    })
+                    .submitMembership({
+                        username: currentUser.Username,
+                        monthsRequested,
+                        referralCode,
+                        receiptURL
+                    });
+            } else {
+                alertModal('Submitted', 'Membership application saved (Mock Mode).');
+                closeModal('membershipModal');
+            }
+        }
+
+        function updateAuthUI() {
+            if(!currentUser) return;
+            const unElem = document.getElementById('headerUsername');
+            if(unElem) unElem.innerText = currentUser.Username + ' (' + (currentUser.Role || 'Member') + ')';
+            if(currentUser.ProfileImageBase64) {
+                const av = document.getElementById('headerAvatar');
+                if(av) av.src = currentUser.ProfileImageBase64;
+            }
+            const authSec = document.getElementById('authHeaderSection');
+            const userSec = document.getElementById('userHeaderSection');
+            if(authSec) authSec.classList.add('hidden');
+            if(userSec) {
+                userSec.classList.remove('hidden');
+                userSec.classList.add('flex');
+            }
+
+            const isAdmin = String(currentUser.Role || '').trim().toLowerCase() === 'admin' || currentUser.Username === 'admin';
+            const invBtn = document.getElementById('adminAddInventoryBtn');
+            const mktBtn = document.getElementById('adminAddMarketBtn');
+            if (invBtn) invBtn.classList.toggle('hidden', !isAdmin);
+            if (mktBtn) mktBtn.classList.toggle('hidden', !isAdmin);
+            renderAll();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            const authSec = document.getElementById('authHeaderSection');
+            const userSec = document.getElementById('userHeaderSection');
+            if(authSec) authSec.classList.remove('hidden');
+            if(userSec) {
+                userSec.classList.add('hidden');
+                userSec.classList.remove('flex');
+            }
+            const invBtn = document.getElementById('adminAddInventoryBtn');
+            const mktBtn = document.getElementById('adminAddMarketBtn');
+            if (invBtn) invBtn.classList.add('hidden');
+            if (mktBtn) mktBtn.classList.add('hidden');
+            cart = [];
+            const badge = document.getElementById('cartBadge');
+            const countHeader = document.getElementById('cartCountHeader');
+            if(badge) badge.innerText = 0;
+            if(countHeader) countHeader.innerText = 0;
+            renderAll();
+            alertModal('Signed Out', 'You have successfully logged out.');
+        }
+
+        function openLendingLog() {
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to view your lending log.');
+                openModal('loginModal');
+                return;
+            }
+            const logs = (appData.LendingLogs || []).filter(l => l.Username === currentUser.Username);
+            let content = '<h3 class="text-xl font-bold text-white mb-4">My Equipment Lending Log</h3>';
+            if(logs.length === 0) {
+                content += '<p class="text-xs text-slate-400">No active or past lending requests found.</p>';
+            } else {
+                content += '<div class="space-y-3">' + logs.map(l => 
+                    '<div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1">' +
+                        '<p class="font-bold text-white">Item ID: ' + escapeAttr(l.ItemID) + '</p>' +
+                        '<p class="text-slate-400">Request Date: ' + escapeAttr(l.RequestDate) + ' | Due Date: ' + escapeAttr(l.DueDate) + '</p>' +
+                        '<span class="inline-block px-2 py-0.5 rounded text-[10px] bg-cyan-500/20 text-cyan-300 font-semibold">' + escapeAttr(l.Status) + '</span>' +
+                    '</div>'
+                ).join('') + '</div>';
+            }
+            document.getElementById('detailModalContent').innerHTML = content;
+            openModal('detailModal');
+        }
+
+        function requestLending(itemID) {
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to request equipment lending.');
+                openModal('loginModal');
+                return;
+            }
+            const dueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Lending Requested', res.message);
+                        loadServerData();
+                    })
+                    .requestLending({ username: currentUser.Username, itemID, dueDate });
+            } else {
+                alertModal('Requested', 'Lending request sent for item ' + itemID + ' (Mock Mode).');
+            }
+        }
+
+        function openEventDetail(title, desc, img) {
+            document.getElementById('detailModalContent').innerHTML = `
+                <div class="space-y-4">
+                    <div class="h-56 rounded-2xl overflow-hidden">
+                        <img src="${escapeAttr(img)}" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">${escapeAttr(title)}</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">${escapeAttr(desc)}</p>
+                    <button onclick="alertModal('Registered', 'Successfully registered for ${escapeAttr(title)}!'); closeModal('detailModal');" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Register for Event</button>
+                </div>
+            `;
+            openModal('detailModal');
+        }
+
+        function openProjectDetail(projectID) {
+            const p = (appData.Projects || []).find(proj => proj.ProjectID === projectID);
             if(!p) return;
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-xl w-full space-y-6 relative border border-slate-700 max-h-[90vh] overflow-y-auto">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div class="h-60 rounded-2xl overflow-hidden bg-slate-900">
-                            <img src="${p.galleryURLs[0]}" class="w-full h-full object-cover">
-                        </div>
-                        <div class="space-y-3">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">${p.status}</span>
-                            <h3 class="text-xl font-bold text-white">${p.title}</h3>
-                            <p class="text-slate-300 text-sm leading-relaxed">${p.description}</p>
-                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-2">
-                                <p><strong class="text-cyan-400">Components Used:</strong> ${p.componentsUsed}</p>
-                                <p><strong class="text-cyan-400">Estimated Cost:</strong> ${p.totalCost}</p>
-                                <p><strong class="text-cyan-400">Author:</strong> @${p.createdBy}</p>
-                            </div>
-                        </div>
-                        <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold border border-slate-700 transition">Close</button>
+            document.getElementById('detailModalContent').innerHTML = `
+                <div class="space-y-4">
+                    <div class="h-60 rounded-2xl overflow-hidden">
+                        <img src="${escapeAttr(p.GalleryURLs || 'https://placehold.co/600x400/10b981/ffffff?text=Project')}" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">${escapeAttr(p.ProjectTitle)}</h3>
+                    <p class="text-xs text-slate-400">Created by <strong class="text-cyan-400">${escapeAttr(p.CreatedBy || 'Anonymous')}</strong></p>
+                    <p class="text-xs text-slate-300 leading-relaxed">${escapeAttr(p.Description)}</p>
+                    <div class="flex flex-wrap gap-1">
+                        ${(p.Tagging || '').split(',').map(t => '<span class="px-2.5 py-1 rounded text-xs bg-slate-900 text-cyan-300 border border-slate-700">' + escapeAttr(t.trim()) + '</span>').join('')}
                     </div>
                 </div>
             `;
+            openModal('detailModal');
         }
 
-        function openEventModal(id) {
-            const ev = appState.events.find(e => e.id === id);
-            if(!ev) return;
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div class="h-48 rounded-2xl overflow-hidden bg-slate-900">
-                            <img src="${ev.image}" class="w-full h-full object-cover">
-                        </div>
-                        <div class="space-y-3">
-                            <span class="text-xs text-cyan-400 font-semibold">${ev.date}</span>
-                            <h3 class="text-xl font-bold text-white">${ev.title}</h3>
-                            <p class="text-slate-300 text-sm">${ev.description}</p>
-                        </div>
-                        <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Close</button>
+        function openSendMessageModal() {
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to send messages.');
+                openModal('loginModal');
+                return;
+            }
+            document.getElementById('detailModalContent').innerHTML = `
+                <h3 class="text-2xl font-bold text-white">Compose Message</h3>
+                <form onhandle="handleSendMessageSubmit(event)" onsubmit="handleSendMessageSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Recipient Username</label>
+                        <input type="text" id="msgRecipient" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                     </div>
-                </div>
-            `;
-        }
-
-        function openContestModal(id) {
-            const c = appState.contests.find(item => item.id === id);
-            if(!c) return;
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div class="space-y-3">
-                            <span class="text-xs text-violet-400 font-semibold">${c.date}</span>
-                            <h3 class="text-xl font-bold text-white">${c.title}</h3>
-                            <p class="text-slate-300 text-sm">${c.description}</p>
-                        </div>
-                        <button onclick="closeModal(); showToast('Registered for contest successfully!');" class="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow transition">Confirm Registration</button>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Subject</label>
+                        <input type="text" id="msgSubject" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                     </div>
-                </div>
-            `;
-        }
-
-        function openLearningModule(id) {
-            const mod = appState.learningModules.find(m => m.id === id);
-            if(!mod) return;
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-                        <div class="space-y-3">
-                            <span class="text-xs text-cyan-400 font-semibold">${mod.category} • ${mod.status}</span>
-                            <h3 class="text-xl font-bold text-white">${mod.title}</h3>
-                            <p class="text-slate-300 text-sm">Interactive learning content, video tutorials, and modular coding challenges will be loaded here.</p>
-                        </div>
-                        <button onclick="closeModal(); showToast('Module progress updated!');" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Mark as Completed</button>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Body</label>
+                        <textarea id="msgBody" required rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white"></textarea>
                     </div>
-                </div>
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Send Message</button>
+                </form>
             `;
+            openModal('detailModal');
         }
 
-        function requestLending(itemId) {
-            showToast(`Lending request submitted for item ${itemId}! Awaiting admin approval.`);
+        function handleSendMessageSubmit(e) {
+            e.preventDefault();
+            const recipient = document.getElementById('msgRecipient').value;
+            const subject = document.getElementById('msgSubject').value;
+            const body = document.getElementById('msgBody').value;
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Sent', res.message);
+                        closeModal('detailModal');
+                        loadServerData();
+                    })
+                    .sendMessage({ sender: currentUser.Username, recipient, subject, body });
+            } else {
+                alertModal('Sent', 'Message sent successfully (Mock Mode).');
+                closeModal('detailModal');
+            }
         }
 
-        // Backend Apps Script Setup Guide Modal
-        function openBackendModal() {
-            document.getElementById('modal-container').innerHTML = `
-                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
-                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-2xl w-full space-y-6 relative border border-slate-700 max-h-[90vh] overflow-y-auto">
-                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+        function openSubmitProjectModal() {
+            if(!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to submit projects.');
+                openModal('loginModal');
+                return;
+            }
+            document.getElementById('detailModalContent').innerHTML = 
+                '<h3 class="text-2xl font-bold text-white">Submit Maker Project</h3>' +
+                '<form onsubmit="handleProjectSubmit(event)" class="space-y-4">' +
+                    '<div>' +
+                        '<label class="block text-xs font-semibold text-slate-300 mb-1">Project Title</label>' +
+                        '<input type="text" id="subTitle" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">' +
+                    '</div>' +
+                    '<div>' +
+                        '<label class="block text-xs font-semibold text-slate-300 mb-1">Description</label>' +
+                        '<textarea id="subDesc" required rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white"></textarea>' +
+                    '</div>' +
+                    '<div>' +
+                        '<label class="block text-xs font-semibold text-slate-300 mb-1">Tagging (IoT, Arduino, micro:bit)</label>' +
+                        '<input type="text" id="subTags" placeholder="e.g. IoT, ESP32" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">' +
+                    '</div>' +
+                    '<div>' +
+                        '<label class="block text-xs font-semibold text-slate-300 mb-1">Project Gallery Images (Max 5)</label>' +
+                        '<div id="projectDropZone" class="border-2 border-dashed border-slate-700 hover:border-cyan-400 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-900/50">' +
+                            '<i class="fa-solid fa-cloud-arrow-up text-cyan-400 text-xl mb-1"></i>' +
+                            '<p class="text-[11px] text-slate-300">Drag & drop images here, or click to browse</p>' +
+                            '<input type="file" id="projectFileInput" multiple accept="image/*" class="hidden">' +
+                        '</div>' +
+                        '<div id="projectPreviews" class="flex flex-wrap gap-2 mt-2"></div>' +
+                    '</div>' +
+                    '<button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Submit to Sheet.Projects</button>' +
+                '</form>';
+            openModal('detailModal');
+            setTimeout(() => {
+                initDragAndDropUploader('projectDropZone', 'projectFileInput', 'projectPreviews');
+            }, 50);
+        }
+
+        function handleProjectSubmit(e) {
+            e.preventDefault();
+            const projectTitle = document.getElementById('subTitle').value;
+            const description = document.getElementById('subDesc').value;
+            const tagging = document.getElementById('subTags').value;
+            
+            let galleryURLs = 'https://placehold.co/600x400/10b981/ffffff?text=Project';
+            if (window.uploaderInstances && window.uploaderInstances['projectDropZone']) {
+                const imgs = window.uploaderInstances['projectDropZone'].getImages();
+                if (imgs.length > 0) {
+                    galleryURLs = imgs[0]; // Primary gallery image base64
+                }
+            }
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Submitted', res.message);
+                        closeModal('detailModal');
+                        loadServerData();
+                    })
+                    .submitProject({
+                        projectTitle,
+                        description,
+                        tagging,
+                        galleryURLs,
+                        username: currentUser.Username
+                    });
+            } else {
+                alertModal('Submitted', 'Project submitted (Mock Mode).');
+                closeModal('detailModal');
+            }
+        }
+
+        function openInventoryModal(itemID) {
+            const item = itemID ? (appData.Inventory || []).find(i => i.ItemID === itemID) : null;
+            document.getElementById('detailModalContent').innerHTML = `
+                <h3 class="text-2xl font-bold text-white">${item ? 'Edit Inventory Item' : 'Add Inventory Item'}</h3>
+                <form onsubmit="handleInventorySaveSubmit(event, '${itemID || ''}')" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Item Name</label>
+                        <input type="text" id="invName" required value="${escapeAttr(item ? item.ItemName : '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                        <input type="text" id="invCategory" required value="${escapeAttr(item ? item.Category : '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <h3 class="text-xl font-bold text-white">Google Apps Script Backend Setup</h3>
-                            <p class="text-xs text-slate-400 mt-1">Deploy this backend code to Google Apps Script connected to your Google Spreadsheet database.</p>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Total Stock</label>
+                            <input type="number" id="invTotalStock" required value="${escapeAttr(item ? item.TotalStock : 10)}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                         </div>
-                        <div class="space-y-3">
-                            <label class="block text-xs font-semibold text-slate-400">Google Apps Script Code (Code.gs)</label>
-                            <textarea readonly rows="12" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs font-mono text-cyan-300 focus:outline-none">
-function doGet(e) {
-  var action = e.parameter.action;
-  var sheetName = e.parameter.sheet;
-  if (action === "getData") {
-    var data = getDataFromSheet(sheetName);
-    return ContentService.createTextOutput(JSON.stringify({status: "success", data: data})).setMimeType(ContentService.MimeType.JSON);
-  }
-  return ContentService.createTextOutput(JSON.stringify({status: "error", message: "Invalid action"})).setMimeType(ContentService.MimeType.JSON);
-}
-
-function doPost(e) {
-  var payload = JSON.parse(e.postData.contents);
-  var action = payload.action;
-  try {
-    return ContentService.createTextOutput(JSON.stringify({status: "success", result: "Action processed"}))
-                         .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({status: "error", message: err.toString()}))
-                         .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function getDataFromSheet(sheetName) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
-  var rows = sheet.getDataRange().getValues();
-  var headers = rows[0];
-  var data = [];
-  for (var i = 1; i < rows.length; i++) {
-    var row = rows[i];
-    var obj = {};
-    for (var j = 0; j < headers.length; j++) { obj[headers[j]] = row[j]; }
-    data.push(obj);
-  }
-  return data;
-}
-                            </textarea>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Available Stock</label>
+                            <input type="number" id="invAvailableStock" required value="${escapeAttr(item ? item.AvailableStock : 10)}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                         </div>
-                        <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Got It</button>
                     </div>
-                </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Status</label>
+                        <select id="invStatus" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                            <option value="Available" ${item && item.Status === 'Available' ? 'selected' : ''}>Available</option>
+                            <option value="Maintenance" ${item && item.Status === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Item Image</label>
+                        <div id="inventoryDropZone" class="border-2 border-dashed border-slate-700 hover:border-cyan-400 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-900/50">
+                            <i class="fa-solid fa-cloud-arrow-up text-cyan-400 text-xl mb-1"></i>
+                            <p class="text-[11px] text-slate-300">Drag & drop image here, or click to browse</p>
+                            <input type="file" id="inventoryFileInput" accept="image/*" class="hidden">
+                        </div>
+                        <div id="inventoryPreviews" class="flex flex-wrap gap-2 mt-2"></div>
+                    </div>
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Save Inventory Item</button>
+                </form>
             `;
+            openModal('detailModal');
+            setTimeout(() => {
+                initDragAndDropUploader('inventoryDropZone', 'inventoryFileInput', 'inventoryPreviews');
+                if (item && item.ImageURL && window.uploaderInstances && window.uploaderInstances['inventoryDropZone']) {
+                    window.uploaderInstances['inventoryDropZone'].setImages([item.ImageURL]);
+                }
+            }, 50);
+        }
+
+        function handleInventorySaveSubmit(e, itemID) {
+            e.preventDefault();
+            const itemName = document.getElementById('invName').value;
+            const category = document.getElementById('invCategory').value;
+            const totalStock = document.getElementById('invTotalStock').value;
+            const availableStock = document.getElementById('invAvailableStock').value;
+            const status = document.getElementById('invStatus').value;
+            
+            let imageURL = 'https://placehold.co/400x300/06b6d4/ffffff?text=Item';
+            if (window.uploaderInstances && window.uploaderInstances['inventoryDropZone']) {
+                const imgs = window.uploaderInstances['inventoryDropZone'].getImages();
+                if (imgs.length > 0) {
+                    imageURL = imgs[0];
+                }
+            }
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Success', res.message);
+                        closeModal('detailModal');
+                        loadServerData();
+                    })
+                    .saveInventoryItem({ itemID, itemName, category, totalStock, availableStock, status, imageURL });
+            } else {
+                alertModal('Success', 'Inventory item saved (Mock Mode).');
+                closeModal('detailModal');
+            }
+        }
+
+        function deleteInventoryItem(itemID) {
+            if(!confirm('Are you sure you want to delete this inventory item?')) return;
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Deleted', res.message);
+                        loadServerData();
+                    })
+                    .deleteInventoryItem({ itemID });
+            } else {
+                alertModal('Deleted', 'Item deleted (Mock Mode).');
+            }
+        }
+
+        function openMarketplaceModal(marketItemID) {
+            const item = marketItemID ? (appData.Marketplace || []).find(i => i.MarketItemID === marketItemID) : null;
+            document.getElementById('detailModalContent').innerHTML = `
+                <h3 class="text-2xl font-bold text-white">${item ? 'Edit Marketplace Item' : 'Add Marketplace Item'}</h3>
+                <form onsubmit="handleMarketSaveSubmit(event, '${marketItemID || ''}')" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Item Name</label>
+                        <input type="text" id="mktName" required value="${escapeAttr(item ? item.ItemName : '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+                        <textarea id="mktDesc" required rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">${escapeAttr(item ? item.Description : '')}</textarea>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Price (RM)</label>
+                            <input type="number" step="0.01" id="mktPrice" required value="${escapeAttr(item ? item.PriceRM : 10.00)}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Points</label>
+                            <input type="number" id="mktPoints" required value="${escapeAttr(item ? item.PointsValue : 100)}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Stock</label>
+                            <input type="number" id="mktStock" required value="${escapeAttr(item ? item.Stock : 20)}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Item Image</label>
+                        <div id="marketDropZone" class="border-2 border-dashed border-slate-700 hover:border-cyan-400 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-900/50">
+                            <i class="fa-solid fa-cloud-arrow-up text-cyan-400 text-xl mb-1"></i>
+                            <p class="text-[11px] text-slate-300">Drag & drop image here, or click to browse</p>
+                            <input type="file" id="marketFileInput" accept="image/*" class="hidden">
+                        </div>
+                        <div id="marketPreviews" class="flex flex-wrap gap-2 mt-2"></div>
+                    </div>
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Save Marketplace Item</button>
+                </form>
+            `;
+            openModal('detailModal');
+            setTimeout(() => {
+                initDragAndDropUploader('marketDropZone', 'marketFileInput', 'marketPreviews');
+                if (item && item.ImageURL && window.uploaderInstances && window.uploaderInstances['marketDropZone']) {
+                    window.uploaderInstances['marketDropZone'].setImages([item.ImageURL]);
+                }
+            }, 50);
+        }
+
+        function handleMarketSaveSubmit(event, marketItemID) {
+            event.preventDefault();
+            const itemName = document.getElementById('mktName').value;
+            const description = document.getElementById('mktDesc').value;
+            const priceRM = document.getElementById('mktPrice').value;
+            const pointsValue = document.getElementById('mktPoints').value;
+            const stock = document.getElementById('mktStock').value;
+            
+            let imageURL = 'https://placehold.co/400x300/06b6d4/ffffff?text=Market';
+            if (window.uploaderInstances && window.uploaderInstances['marketDropZone']) {
+                const imgs = window.uploaderInstances['marketDropZone'].getImages();
+                if (imgs.length > 0) {
+                    imageURL = imgs[0];
+                }
+            }
+
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHandler(res => {
+                        alertModal('Success', res.message);
+                        closeModal('detailModal');
+                        loadServerData();
+                    })
+                    .saveMarketItem({ marketItemID, itemName, description, priceRM, pointsValue, stock, imageURL });
+            } else {
+                alertModal('Success', 'Marketplace item saved (Mock Mode).');
+                closeModal('detailModal');
+            }
+        }
+
+        function deleteMarketItem(marketItemID) {
+            if(!confirm('Are you sure you want to delete this marketplace item?')) return;
+            if(isGAS()) {
+                google.script.run
+                    .withSuccessHeader(res => {
+                        alertModal('Deleted', res.message);
+                        loadServerData();
+                    })
+                    .deleteMarketItem({ marketItemID });
+            } else {
+                alertModal('Deleted', 'Item deleted (Mock Mode).');
+            }
         }
     </script>
 </body>
