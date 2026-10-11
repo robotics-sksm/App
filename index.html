@@ -1387,8 +1387,9 @@
             let galleryURLs = 'https://placehold.co/600x400/10b981/ffffff?text=Project';
             if (window.uploaderInstances && window.uploaderInstances['projectDropZone']) {
                 const imgs = window.uploaderInstances['projectDropZone'].getImages();
-                if (imgs.length > 0) {
-                    galleryURLs = imgs[0]; // Primary gallery image base64
+                if (imgs && imgs.length > 0) {
+                    // Combine all images (up to 5) into a single comma-separated string
+                    galleryURLs = imgs.join(', ');
                 }
             }
 
