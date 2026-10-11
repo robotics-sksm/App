@@ -1313,7 +1313,7 @@
           // Build carousel HTML
           const carouselHTML = `
             <div class="embedded-slider aspect-[4/3] rounded-2xl overflow-hidden relative">
-              <div class="slider-track" style="width: calc(100% * ${galleryLinks.length});">
+              <div class="slider-track" style="width: calc(100%);">
                 ${galleryLinks.map(link => `
                   <img src="${escapeAttr(link)}" class="w-full h-full object-contain flex-shrink-0" alt="Project Image">
                 `).join('')}
