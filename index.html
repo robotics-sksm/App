@@ -35,6 +35,11 @@
           word-wrap: break-word;       /* breaks long words if needed */
           overflow-wrap: break-word;   /* modern equivalent */
         }
+        .landscape-box {
+          aspect-ratio: 4 / 3;
+          width: 100%;          /* or set a max-width */
+          overflow: hidden;
+        }
     </style>
 </head>
 <body class="bg-darkBg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -946,7 +951,7 @@
             grid.innerHTML = items.map(p => 
                 '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl flex flex-col justify-between">' +
                     '<div>' +
-                        '<div class="aspect[4/3] overflow-hidden rounded-lg">' +
+                        '<div class="landscape-box">' +
                             '<img src="' + escapeAttr(p.GalleryURLs.split(',')[0].trim() || 'https://placehold.co/600x400/10b981/ffffff?text=Project') + '" class="w-full h-full object-cover" alt="Project">' +
                         '</div>' +
                         '<div class="p-5 space-y-2">' +
