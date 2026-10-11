@@ -40,6 +40,26 @@
           width: 100%;          /* or set a max-width */
           overflow: hidden;
         }
+        .slider-track {
+          display: flex;
+          height: 100%;
+          transition: transform 0.4s ease-in-out;
+        }
+        
+        .slider-btn {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(0,0,0,0.5);
+          color: #fff;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+          border-radius: 50%;
+          z-index: 2;
+        }
+        .slider-btn.prev { left: 10px; }
+        .slider-btn.next { right: 10px; }
     </style>
 </head>
 <body class="bg-darkBg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
@@ -1284,22 +1304,59 @@
         }
 
         function openProjectDetail(projectID) {
-            const p = (appData.Projects || []).find(proj => proj.ProjectID === projectID);
-            if(!p) return;
-            document.getElementById('detailModalContent').innerHTML = `
-                <div class="space-y-4">
-                    <div class="h-60 rounded-2xl overflow-hidden">
-                        <img src="${escapeAttr(p.GalleryURLs || 'https://placehold.co/600x400/10b981/ffffff?text=Project')}" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-2xl font-bold text-white">${escapeAttr(p.ProjectTitle)}</h3>
-                    <p class="text-xs text-slate-400">Created by <strong class="text-cyan-400">${escapeAttr(p.CreatedBy || 'Anonymous')}</strong></p>
-                    <p class="text-xs text-slate-300 leading-relaxed text-wrap">${escapeAttr(p.Description)}</p>
-                    <div class="flex flex-wrap gap-1">
-                        ${(p.Tagging || '').split(',').map(t => '<span class="px-2.5 py-1 rounded text-xs bg-slate-900 text-cyan-300 border border-slate-700">' + escapeAttr(t.trim()) + '</span>').join('')}
-                    </div>
-                </div>
-            `;
-            openModal('detailModal');
+          const p = (appData.Projects || []).find(proj => proj.ProjectID === projectID);
+          if (!p) return;
+        
+          // Split GalleryURLs into array
+          const galleryLinks = (p.GalleryURLs || '').split(',').map(l => l.trim()).filter(Boolean);
+        
+          // Build carousel HTML
+          const carouselHTML = `
+            <div class="embedded-slider aspect-[4/3] rounded-2xl overflow-hidden relative">
+              <div class="slider-track" style="width: calc(100% * ${galleryLinks.length});">
+                ${galleryLinks.map(link => `
+                  <img src="${escapeAttr(link)}" class="w-full h-full object-cover flex-shrink-0" alt="Project Image">
+                `).join('')}
+              </div>
+              <button class="slider-btn prev">&#10094;</button>
+              <button class="slider-btn next">&#10095;</button>
+            </div>
+          `;
+        
+          document.getElementById('detailModalContent').innerHTML = `
+            <div class="space-y-4">
+              ${carouselHTML}
+              <h3 class="text-2xl font-bold text-white">${escapeAttr(p.ProjectTitle)}</h3>
+              <p class="text-xs text-slate-400">Created by <strong class="text-cyan-400">${escapeAttr(p.CreatedBy || 'Anonymous')}</strong></p>
+              <p class="text-xs text-slate-300 leading-relaxed whitespace-pre-wrap break-words">${escapeAttr(p.Description)}</p>
+              <div class="flex flex-wrap gap-1">
+                ${(p.Tagging || '').split(',').map(t => 
+                  '<span class="px-2.5 py-1 rounded text-xs bg-slate-900 text-cyan-300 border border-slate-700">' + escapeAttr(t.trim()) + '</span>'
+                ).join('')}
+              </div>
+            </div>
+          `;
+        
+          // Attach carousel logic
+          const track = document.querySelector('.slider-track');
+          const slides = document.querySelectorAll('.slider-track img');
+          let index = 0;
+        
+          function updateSlide() {
+            track.style.transform = `translateX(-${index * 100}%)`;
+          }
+        
+          document.querySelector('.slider-btn.prev').addEventListener('click', () => {
+            index = (index > 0) ? index - 1 : slides.length - 1;
+            updateSlide();
+          });
+        
+          document.querySelector('.slider-btn.next').addEventListener('click', () => {
+            index = (index < slides.length - 1) ? index + 1 : 0;
+            updateSlide();
+          });
+        
+          openModal('detailModal');
         }
 
         function openSendMessageModal() {
