@@ -221,7 +221,7 @@
                 <div>
                     <h3 class="text-2xl font-bold flex items-center space-x-2">
                         <i class="fa-solid fa-lightbulb text-cyan-400"></i>
-                        <span>Project Corner (Sheet.Projects)</span>
+                        <span>Project Corner</span>
                     </h3>
                     <p class="text-xs text-slate-400">Explore community innovations fetched from Google Sheets and submit your own.</p>
                 </div>
@@ -946,7 +946,7 @@
             grid.innerHTML = items.map(p => 
                 '<div class="rounded-2xl bg-darkCard border border-darkBorder overflow-hidden shadow-xl flex flex-col justify-between">' +
                     '<div>' +
-                        '<div class="h-44 overflow-hidden">' +
+                        '<div class="aspect[4/3] overflow-hidden">' +
                             '<img src="' + escapeAttr(p.GalleryURLs || 'https://placehold.co/600x400/10b981/ffffff?text=Project') + '" class="w-full h-full object-cover" alt="Project">' +
                         '</div>' +
                         '<div class="p-5 space-y-2">' +
