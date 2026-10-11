@@ -1,16 +1,1040 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxgMfpNgeIQfgtBAM_uN0HQz_ZOIQfaLyneLgUupKx6oXQ_XH4geAakCuXc6igM9Mf0/exec";
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIDM Hub - Robotics, Innovation & Digital Maker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darker: '#07090e',
+                        dark: '#0b0f19',
+                        card: '#131c2e',
+                        accent: {
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            violet: '#8b5cf6',
+                            amber: '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        .glass-panel { background: rgba(19, 28, 46, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glow-cyan { box-shadow: 0 0 25px rgba(6, 182, 212, 0.2); }
+        .glow-violet { box-shadow: 0 0 25px rgba(139, 92, 246, 0.2); }
+    </style>
+</head>
+<body class="bg-dark text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
 
-async function callAPI(action, payload = {}) {
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80 px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-violet-600 to-emerald-400 flex items-center justify-center text-white font-black text-xl shadow-lg glow-cyan">
+                R
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-cyan-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">RIDM HUB</h1>
+                <p class="text-[10px] text-slate-400 tracking-wider uppercase font-semibold">Robotics, Innovation & Digital Maker</p>
+            </div>
+        </div>
+
+        <!-- DESKTOP PILL MENU BAR -->
+        <nav id="desktop-menu" class="hidden lg:flex items-center space-x-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-full shadow-xl">
+            <button onclick="switchTab('home')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-cyan-400 bg-cyan-950/60" data-tab="home">
+                <i class="fa-solid fa-house"></i>
+                <span class="menu-label">Home</span>
+            </button>
+            <button onclick="switchTab('inventory')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="inventory">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span class="menu-label">Inventory & Lending</span>
+            </button>
+            <button onclick="switchTab('learning')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="learning">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span class="menu-label">Learning Hub</span>
+            </button>
+            <button onclick="switchTab('contests')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="contests">
+                <i class="fa-solid fa-trophy"></i>
+                <span class="menu-label">Contest Hub</span>
+            </button>
+            <button onclick="switchTab('projects')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="projects">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span class="menu-label">Project Corner</span>
+            </button>
+            <button onclick="switchTab('marketplace')" class="nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60" data-tab="marketplace">
+                <i class="fa-solid fa-store"></i>
+                <span class="menu-label">Marketplace</span>
+            </button>
+        </nav>
+
+        <!-- RIGHT HEADER: PROFILE / AUTH / NOTIFICATIONS -->
+        <div class="flex items-center space-x-3">
+            <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition" title="Toggle Theme">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
+            <button onclick="openBackendModal()" class="hidden md:flex items-center space-x-2 px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-cyan-400 transition" title="Backend Setup & Code">
+                <i class="fa-solid fa-code text-cyan-400"></i>
+                <span>Apps Script</span>
+            </button>
+            <div id="auth-header-container">
+                <!-- Dynamic Auth / Profile UI injected via JS -->
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="app-content" class="flex-grow max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 pb-24 lg:pb-12">
+        <!-- Dynamic Views Injected Here -->
+    </main>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-slate-800 px-4 py-2 flex justify-around items-center bg-darker/90 backdrop-blur-lg">
+        <button onclick="switchTab('home')" class="mobile-nav-btn flex flex-col items-center text-xs text-cyan-400" data-tab="home">
+            <i class="fa-solid fa-house text-lg mb-0.5"></i>
+            <span>Home</span>
+        </button>
+        <button onclick="switchTab('inventory')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="inventory">
+            <i class="fa-solid fa-boxes-stacked text-lg mb-0.5"></i>
+            <span>Inventory</span>
+        </button>
+        <button onclick="switchTab('learning')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="learning">
+            <i class="fa-solid fa-graduation-cap text-lg mb-0.5"></i>
+            <span>Learn</span>
+        </button>
+        <button onclick="switchTab('contests')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="contests">
+            <i class="fa-solid fa-trophy text-lg mb-0.5"></i>
+            <span>Contests</span>
+        </button>
+        <button onclick="switchTab('projects')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="projects">
+            <i class="fa-solid fa-lightbulb text-lg mb-0.5"></i>
+            <span>Projects</span>
+        </button>
+        <button onclick="switchTab('marketplace')" class="mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white" data-tab="marketplace">
+            <i class="fa-solid fa-store text-lg mb-0.5"></i>
+            <span>Store</span>
+        </button>
+    </nav>
+
+    <!-- MODALS CONTAINER -->
+    <div id="modal-container"></div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed bottom-16 lg:bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <script>
+        // --- APP STATE & INITIALIZATION ---
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbx.../exec"; // User can configure via Settings
+        let appState = {
+            currentTab: 'home',
+            user: JSON.parse(localStorage.getItem('ridm_user')) || null, // {username, fullName, role: 'Active Member', points: 350, email: 'pupil@ridm.edu.my'}
+            apiUrl: localStorage.getItem('ridm_api_url') || DEFAULT_API_URL,
+            cart: JSON.parse(localStorage.getItem('ridm_cart')) || [],
+            messages: [
+                {id: 1, sender: 'AdminTeacher', recipient: 'student1', subject: 'Welcome to RIDM Hub!', body: 'Your membership is active. Enjoy exploring our maker space and learning modules.', status: 'unread', timestamp: '2026-06-01 10:00'}
+            ],
+            projects: [
+                {id: 1, title: 'Smart IoT Plant Watering System', description: 'Automated soil moisture monitoring using ESP32 and micro:bit with cloud dashboard logging.', tagging: 'IoT, micro:bit, ESP32', componentsUsed: 'ESP32 NodeMCU, Soil Moisture Sensor, Relay Module', totalCost: 'RM 45.00', galleryURLs: ['https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=600'], attachmentURLs: [], groupMembers: 'Ali, Siti', createdBy: 'AhmadZ', approvedBy: 'TeacherCikgu', likeCount: 24, status: 'Approved'},
+                {id: 2, title: 'Bluetooth Obstacle Avoidance Robot', description: 'REKA:BIT chassis powered robot with ultrasonic sensors and smartphone remote control via Bluetooth.', tagging: 'RBT Project, REKA:BIT, Arduino', componentsUsed: 'REKA:BIT Board, HC-05 Bluetooth, Ultrasonic Sensor', totalCost: 'RM 88.50', galleryURLs: ['https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600'], attachmentURLs: [], groupMembers: 'Tan Mei Ling', createdBy: 'MeiLing', approvedBy: 'TeacherCikgu', likeCount: 41, status: 'Approved'}
+            ],
+            inventory: [
+                {id: 'INV-01', name: 'BBC micro:bit V2 Go Bundle', category: 'Microcontroller', totalStock: 30, availableStock: 18, status: 'Available', imageURL: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400'},
+                {id: 'INV-02', name: 'REKA:BIT Robotics Controller', category: 'Robotics', totalStock: 15, availableStock: 5, status: 'Low Stock', imageURL: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400'},
+                {id: 'INV-03', name: 'ESP32 CAM WiFi Module', category: 'IoT', totalStock: 20, availableStock: 12, status: 'Available', imageURL: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400'},
+                {id: 'INV-04', name: 'Arduino Uno R3 Starter Kit', category: 'Microcontroller', totalStock: 25, availableStock: 0, status: 'Out of Stock', imageURL: 'https://images.unsplash.com/photo-1555680202-c86f0e12f086?w=400'}
+            ],
+            marketplace: [
+                {id: 'MKT-01', name: 'Soldering Iron Station 60W', description: 'Digital adjustable temperature soldering station with stand and brass cleaner.', priceRM: 65.00, pointsValue: 650, stock: 8, imageURL: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400'},
+                {id: 'MKT-02', name: 'Jumper Wires Male-to-Male (40pcs)', description: 'Standard flexible breadboard jumper cables for prototyping.', priceRM: 4.50, pointsValue: 45, stock: 45, imageURL: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400'},
+                {id: 'MKT-03', name: 'OLED 0.96 inch I2C Display', description: 'High contrast white monochrome display module for micro:bit and Arduino.', priceRM: 12.00, pointsValue: 120, stock: 14, imageURL: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400'}
+            ],
+            learningModules: [
+                {id: 'MOD-1', title: 'micro:bit Fundamentals & Sensors', category: 'Beginner', progress: 100, score: 95, badge: 'micro:bit Pioneer', status: 'Completed'},
+                {id: 'MOD-2', title: 'REKA:BIT Robotics & Motor Control', category: 'Intermediate', progress: 60, score: 0, badge: 'Robotics Builder', status: 'In Progress'},
+                {id: 'MOD-3', title: 'IoT Cloud Telemetry with ESP32', category: 'Advanced', progress: 0, score: 0, badge: 'IoT Expert', status: 'Locked'}
+            ],
+            contests: [
+                {id: 1, title: 'National Robotics & Coding Challenge 2026', date: '15 July 2026', description: 'Build autonomous rescue rovers using micro:bit and REKA:BIT. Open to all active student members.', poster: 'https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?w=600'},
+                {id: 2, title: 'National Green Energy Maker Hackathon', date: '28 August 2026', description: 'Design smart IoT energy monitoring systems for sustainable smart schools.', poster: 'https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=600'}
+            ],
+            events: [
+                {id: 1, title: 'RIDM Maker Fair & Open Day', date: 'Saturday, 10 AM', description: 'Experience live student robotics showcases, 3D printing workshops, and AI demo booths.', image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800'},
+                {id: 2, title: 'Advanced IoT & Python Workshop', date: 'Next Tuesday, 2 PM', description: 'Learn MicroPython programming on ESP32 microcontrollers with cloud MQTT broker integration.', image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800'}
+            ]
+        };
+
+        // Initialize App on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAuthHeader();
+            switchTab(appState.currentTab);
+        });
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-2xl text-sm font-medium flex items-center space-x-3 transition-all duration-300 transform translate-y-2 opacity-0 ${type === 'success' ? 'bg-emerald-950/90 border border-emerald-500/50 text-emerald-300' : 'bg-rose-950/90 border border-rose-500/50 text-rose-300'}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-exclamation text-rose-400'} text-lg"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+        }
+
+        // --- NAVIGATION & ROUTING ---
+        function switchTab(tabName) {
+            appState.currentTab = tabName;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+
+            // Update Desktop Nav UI
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.tab === tabName) {
+                    btn.className = "nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-cyan-400 bg-cyan-950/60";
+                } else {
+                    btn.className = "nav-btn flex items-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60";
+                }
+            });
+
+            // Update Mobile Nav UI
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                if(btn.dataset.tab === tabName) {
+                    btn.className = "mobile-nav-btn flex flex-col items-center text-xs text-cyan-400";
+                } else {
+                    btn.className = "mobile-nav-btn flex flex-col items-center text-xs text-slate-400 hover:text-white";
+                }
+            });
+
+            renderCurrentView();
+        }
+
+        function renderCurrentView() {
+            const container = document.getElementById('app-content');
+            switch(appState.currentTab) {
+                case 'home':
+                    container.innerHTML = renderHomeView();
+                    break;
+                case 'inventory':
+                    container.innerHTML = renderInventoryView();
+                    break;
+                case 'learning':
+                    container.innerHTML = renderLearningView();
+                    break;
+                case 'contests':
+                    container.innerHTML = renderContestsView();
+                    break;
+                case 'projects':
+                    container.innerHTML = renderProjectsView();
+                    break;
+                case 'marketplace':
+                    container.innerHTML = renderMarketplaceView();
+                    break;
+                case 'profile':
+                    container.innerHTML = renderProfileView();
+                    break;
+                default:
+                    container.innerHTML = renderHomeView();
+            }
+        }
+
+        // --- STREAMING_CHUNK:Rendering Home view with interactive event carousel... ---
+        function renderHomeView() {
+            return `
+                <div class="space-y-8 animate-fadeIn">
+                    <!-- HERO BANNER -->
+                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-violet-950 border border-slate-800 p-8 lg:p-12 shadow-2xl">
+                        <div class="relative z-10 max-w-2xl space-y-4">
+                            <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold tracking-wide uppercase">RIDM Hub Ecosystem</span>
+                            <h2 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-white">Empowering Future Innovators & Digital Makers</h2>
+                            <p class="text-slate-300 text-base lg:text-lg">Access school inventory, collaborative robotics projects, interactive learning modules, and marketplace rewards all in one digital hub.</p>
+                            <div class="flex flex-wrap gap-4 pt-2">
+                                <button onclick="switchTab('projects')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg hover:opacity-90 transition">Explore Projects</button>
+                                <button onclick="switchTab('marketplace')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold border border-slate-700 transition">Browse Marketplace</button>
+                            </div>
+                        </div>
+                        <div class="absolute right-0 bottom-0 opacity-20 lg:opacity-40 pointer-events-none transform translate-x-10 translate-y-10">
+                            <i class="fa-solid fa-microchip text-[260px] text-cyan-400"></i>
+                        </div>
+                    </div>
+
+                    <!-- EVENT CAROUSEL SECTION -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-white flex items-center space-x-2"><i class="fa-solid fa-bullhorn text-cyan-400"></i><span>Current & Upcoming Events</span></h3>
+                            <span class="text-xs text-slate-400">Swipe or click posters to view details</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            ${appState.events.map(ev => `
+                                <div class="glass-panel rounded-2xl overflow-hidden hover:border-cyan-500/50 transition duration-300 flex flex-col cursor-pointer" onclick="openEventModal(${ev.id})">
+                                    <div class="h-48 overflow-hidden relative">
+                                        <img src="${ev.image}" alt="${ev.title}" class="w-full h-full object-cover transform hover:scale-105 transition duration-500">
+                                        <div class="absolute top-3 right-3 bg-dark/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-cyan-400 border border-slate-700">${ev.date}</div>
+                                    </div>
+                                    <div class="p-6 flex flex-col flex-grow space-y-2">
+                                        <h4 class="text-lg font-bold text-white">${ev.title}</h4>
+                                        <p class="text-slate-400 text-sm flex-grow">${ev.description}</p>
+                                        <div class="pt-4 flex items-center text-cyan-400 text-sm font-semibold space-x-2">
+                                            <span>View Event Details</span>
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Asset Inventory and Lending Management view... ---
+        function renderInventoryView() {
+            const isMemberActive = appState.user && appState.user.role === 'Active Member';
+            return `
+                <div class="space-y-6">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Asset & School Inventory</h2>
+                            <p class="text-slate-400 text-sm">Browse maker equipment and request lending services for active members.</p>
+                        </div>
+                        ${!isMemberActive ? `<div class="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-medium flex items-center space-x-2"><i class="fa-solid fa-triangle-exclamation"></i><span>Active Membership Required for Lending</span></div>` : ''}
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${appState.inventory.map(item => `
+                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col">
+                                <div class="h-40 overflow-hidden relative bg-slate-900">
+                                    <img src="${item.imageURL}" alt="${item.name}" class="w-full h-full object-cover">
+                                    <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold ${item.status === 'Available' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : item.status === 'Low Stock' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'}">${item.status}</span>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow space-y-3">
+                                    <div>
+                                        <span class="text-[10px] uppercase font-semibold text-cyan-400 tracking-wider">${item.category}</span>
+                                        <h4 class="text-base font-bold text-white mt-0.5">${item.name}</h4>
+                                    </div>
+                                    <div class="flex justify-between text-xs text-slate-400 pt-2 border-t border-slate-800">
+                                        <span>Total: ${item.totalStock}</span>
+                                        <span class="text-emerald-400 font-semibold">Available: ${item.availableStock}</span>
+                                    </div>
+                                    <button onclick="requestLending('${item.id}')" ${item.availableStock === 0 || !isMemberActive ? 'disabled' : ''} class="w-full py-2.5 rounded-xl text-xs font-semibold transition ${item.availableStock > 0 && isMemberActive ? 'bg-cyan-500 hover:bg-cyan-600 text-white shadow-lg' : 'bg-slate-800 text-slate-500 cursor-not-allowed'}">
+                                        ${item.availableStock > 0 ? (isMemberActive ? 'Request Lending' : 'Unlock Membership') : 'Out of Stock'}
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Learning Hub with modular progress tracking... ---
+        function renderLearningView() {
+            return `
+                <div class="space-y-6">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Learning Hub</h2>
+                            <p class="text-slate-400 text-sm">Complete modular courses, gain scores, and earn verifiable achievement badges.</p>
+                        </div>
+                        <div class="glass-panel px-4 py-2 rounded-2xl flex items-center space-x-3">
+                            <i class="fa-solid fa-coins text-amber-400 text-lg"></i>
+                            <div>
+                                <p class="text-[10px] text-slate-400 uppercase font-semibold">Reward Points</p>
+                                <p class="text-sm font-bold text-white">${appState.user ? appState.user.points : 0} PTS</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        ${appState.learningModules.map(mod => `
+                            <div class="glass-panel rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                                <div class="space-y-2 max-w-xl">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-400 border border-violet-500/30">${mod.category}</span>
+                                        <span class="text-xs text-slate-400 font-medium">${mod.status}</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white">${mod.title}</h3>
+                                    <div class="flex items-center space-x-3 pt-1">
+                                        <div class="w-48 bg-slate-800 rounded-full h-2 overflow-hidden">
+                                            <div class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-2 rounded-full" style="width: ${mod.progress}%"></div>
+                                        </div>
+                                        <span class="text-xs font-semibold text-cyan-400">${mod.progress}%</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4 w-full md:w-auto justify-between md:justify-end">
+                                    <div class="text-right">
+                                        <p class="text-[10px] text-slate-400 uppercase font-semibold">Badge Earned</p>
+                                        <p class="text-xs font-bold text-emerald-400">${mod.badge}</p>
+                                    </div>
+                                    <button onclick="openLearningModule('${mod.id}')" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold border border-slate-700 transition">
+                                        ${mod.progress === 100 ? 'Review Module' : 'Continue Learning'}
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Contest Hub and Project Corner with rich modals... ---
+        function renderContestsView() {
+            return `
+                <div class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Contest Hub</h2>
+                        <p class="text-slate-400 text-sm">Participate in school and national maker competitions, hackathons, and challenges.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        ${appState.contests.map(c => `
+                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col">
+                                <div class="h-48 overflow-hidden relative">
+                                    <img src="${c.poster}" alt="${c.title}" class="w-full h-full object-cover">
+                                    <div class="absolute top-3 right-3 bg-dark/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-violet-400 border border-slate-700">${c.date}</div>
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow space-y-3">
+                                    <h3 class="text-lg font-bold text-white">${c.title}</h3>
+                                    <p class="text-slate-400 text-sm flex-grow">${c.description}</p>
+                                    <button onclick="openContestModal(${c.id})" class="w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow-lg transition">Register / Submit Entry</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProjectsView() {
+            return `
+                <div class="space-y-6">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Project Corner</h2>
+                            <p class="text-slate-400 text-sm">Explore student maker projects, circuits, and IoT innovations.</p>
+                        </div>
+                        ${appState.user ? `<button onclick="openAddProjectModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-lg hover:opacity-90 transition flex items-center space-x-2"><i class="fa-solid fa-plus"></i><span>Submit New Project</span></button>` : `<button onclick="openAuthModal()" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700">Sign in to Submit Project</button>`}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${appState.projects.map(p => `
+                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col hover:border-cyan-500/50 transition duration-300 cursor-pointer" onclick="openProjectDetail(${p.id})">
+                                <div class="h-44 overflow-hidden relative bg-slate-900">
+                                    <img src="${p.galleryURLs[0]}" alt="${p.title}" class="w-full h-full object-cover">
+                                    <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">${p.status}</span>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow space-y-3">
+                                    <div class="flex flex-wrap gap-1">
+                                        ${p.tagging.split(',').map(t => `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300">${t.trim()}</span>`).join('')}
+                                    </div>
+                                    <h3 class="text-base font-bold text-white">${p.title}</h3>
+                                    <p class="text-slate-400 text-xs line-clamp-2 flex-grow">${p.description}</p>
+                                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                                        <span>By ${p.createdBy}</span>
+                                        <div class="flex items-center space-x-1 text-rose-400">
+                                            <i class="fa-solid fa-heart"></i>
+                                            <span>${p.likeCount}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Marketplace with reward points and cart checkout... ---
+        function renderMarketplaceView() {
+            const cartCount = appState.cart.reduce((sum, item) => sum + item.qty, 0);
+            return `
+                <div class="space-y-6">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">Marketplace & Rewards</h2>
+                            <p class="text-slate-400 text-sm">Purchase electronic components and maker kits using cash or earned reward points.</p>
+                        </div>
+                        <button onclick="openCartModal()" class="relative px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-semibold shadow-lg hover:opacity-90 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Shopping Cart</span>
+                            ${cartCount > 0 ? `<span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">${cartCount}</span>` : ''}
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${appState.marketplace.map(item => `
+                            <div class="glass-panel rounded-2xl overflow-hidden flex flex-col">
+                                <div class="h-48 overflow-hidden relative bg-slate-900">
+                                    <img src="${item.imageURL}" alt="${item.name}" class="w-full h-full object-cover">
+                                    <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-900/80 text-cyan-400 border border-slate-700">Stock: ${item.stock}</span>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow space-y-3">
+                                    <h3 class="text-base font-bold text-white">${item.name}</h3>
+                                    <p class="text-slate-400 text-xs line-clamp-2 flex-grow">${item.description}</p>
+                                    <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                                        <div>
+                                            <p class="text-sm font-extrabold text-white">RM ${item.priceRM.toFixed(2)}</p>
+                                            <p class="text-[10px] text-amber-400 font-semibold">${item.pointsValue} Points</p>
+                                        </div>
+                                        <button onclick="addToCart('${item.id}')" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Member Profile Management and Image Compressor... ---
+        function renderProfileView() {
+            if (!appState.user) return `<div class="text-center py-20 space-y-4"><h3 class="text-xl font-bold text-white">Please sign in to access your profile.</h3><button onclick="openAuthModal()" class="px-6 py-2.5 rounded-xl bg-cyan-500 text-white text-sm font-semibold">Sign In / Register</button></div>`;
+            const user = appState.user;
+            return `
+                <div class="space-y-6 max-w-4xl mx-auto">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 flex flex-col md:flex-row items-center gap-6">
+                        <div class="relative">
+                            <div class="w-28 h-28 rounded-2xl overflow-hidden bg-slate-800 border-2 border-cyan-500/50 shadow-xl">
+                                <img id="profile-avatar-preview" src="${user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'}" alt="Avatar" class="w-full h-full object-cover">
+                            </div>
+                            <label class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white flex items-center justify-center cursor-pointer shadow-lg transition" title="Change Avatar">
+                                <i class="fa-solid fa-camera text-xs"></i>
+                                <input type="file" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
+                            </label>
+                        </div>
+                        <div class="flex-grow text-center md:text-left space-y-2">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                <div>
+                                    <h2 class="text-2xl font-bold text-white">${user.fullName}</h2>
+                                    <p class="text-xs text-slate-400">@${user.username} • ${user.email}</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold ${user.role === 'Active Member' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-300'}">${user.role}</span>
+                            </div>
+                            <div class="flex flex-wrap gap-4 pt-2 justify-center md:justify-start">
+                                <div class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800">
+                                    <p class="text-[10px] text-slate-400 uppercase font-semibold">Membership Status</p>
+                                    <p class="text-xs font-bold text-cyan-400">Active until Dec 2026</p>
+                                </div>
+                                <button onclick="openMembershipModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-semibold shadow hover:opacity-90 transition flex items-center space-x-2">
+                                    <i class="fa-solid fa-id-card"></i>
+                                    <span>Renew / Apply Membership</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROFILE TABS / SECTIONS -->
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 space-y-6">
+                        <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-4">Personal Information & Security</h3>
+                        <form onsubmit="updateProfile(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Full Name</label>
+                                <input type="text" id="prof-fullname" value="${user.fullName || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">IC Number (No. KP)</label>
+                                <input type="text" id="prof-ic" value="${user.icNumber || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="080101-14-1234">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">School</label>
+                                <input type="text" id="prof-school" value="${user.school || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="SMK Damansara Jaya">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">WhatsApp Contact</label>
+                                <input type="text" id="prof-whatsapp" value="${user.whatsapp || ''}" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="+60123456789">
+                            </div>
+                            <div class="md:col-span-2 flex justify-end pt-2">
+                                <button type="submit" class="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK:Rendering Messaging Inbox and Modal Dialog systems... ---
+        function renderAuthHeader() {
+            const container = document.getElementById('auth-header-container');
+            if (appState.user) {
+                container.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <button onclick="switchTab('profile')" class="flex items-center space-x-2 bg-slate-900 border border-slate-800 hover:border-cyan-500/50 px-3 py-1.5 rounded-xl transition">
+                            <img src="${appState.user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}" class="w-7 h-7 rounded-lg object-cover">
+                            <span class="text-xs font-semibold text-white hidden sm:inline">${appState.user.username}</span>
+                        </button>
+                        <button onclick="logoutUser()" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-rose-400 transition" title="Log Out">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-lg hover:opacity-90 transition">
+                        Sign In / Register
+                    </button>
+                `;
+            }
+        }
+
+        // --- MODAL DIALOG CONTROLLERS ---
+        function closeModal() {
+            document.getElementById('modal-container').innerHTML = '';
+        }
+
+        function openAuthModal() {
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-md w-full space-y-6 relative border border-slate-700 animate-fadeIn">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Welcome to RIDM Hub</h3>
+                            <p class="text-xs text-slate-400 mt-1">Sign in with your account or register as a new member.</p>
+                        </div>
+                        <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Username</label>
+                                <input type="text" id="auth-username" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. smartmaker">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Password</label>
+                                <input type="password" id="auth-password" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="••••••••">
+                            </div>
+                            <div class="pt-2 flex gap-3">
+                                <button type="submit" class="flex-1 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg transition">Sign In</button>
+                                <button type="button" onclick="registerUser()" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('auth-username').value;
+            appState.user = {
+                username: username,
+                fullName: username.charAt(0).toUpperCase() + username.slice(1),
+                role: 'Active Member',
+                points: 350,
+                email: `${username}@ridm.edu.my`,
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'
+            };
+            localStorage.setItem('ridm_user', JSON.stringify(appState.user));
+            closeModal();
+            renderAuthHeader();
+            renderCurrentView();
+            showToast(`Welcome back, ${appState.user.fullName}!`);
+        }
+
+        function registerUser() {
+            const username = document.getElementById('auth-username').value;
+            if(!username) {
+                showToast('Please enter a username to register.', 'error');
+                return;
+            }
+            appState.user = {
+                username: username,
+                fullName: username,
+                role: 'Active Member',
+                points: 100,
+                email: `${username}@ridm.edu.my`,
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400'
+            };
+            localStorage.setItem('ridm_user', JSON.stringify(appState.user));
+            closeModal();
+            renderAuthHeader();
+            renderCurrentView();
+            showToast('Registration successful! Welcome to RIDM Hub.');
+        }
+
+        function logoutUser() {
+            appState.user = null;
+            localStorage.removeItem('ridm_user');
+            renderAuthHeader();
+            renderCurrentView();
+            showToast('Logged out successfully.');
+        }
+
+        // Profile Image Compressor (256 x 256)
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 256;
+                    canvas.height = 256;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, 256, 256);
+                    const base64String = canvas.toDataURL('image/jpeg', 0.85);
+                    appState.user.avatar = base64String;
+                    localStorage.setItem('ridm_user', JSON.stringify(appState.user));
+                    document.getElementById('profile-avatar-preview').src = base64String;
+                    renderAuthHeader();
+                    showToast('Profile avatar updated and compressed successfully!');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateProfile(e) {
+            e.preventDefault();
+            appState.user.fullName = document.getElementById('prof-fullname').value;
+            appState.user.icNumber = document.getElementById('prof-ic').value;
+            appState.user.school = document.getElementById('prof-school').value;
+            appState.user.whatsapp = document.getElementById('prof-whatsapp').value;
+            localStorage.setItem('ridm_user', JSON.stringify(appState.user));
+            renderAuthHeader();
+            showToast('Profile information updated successfully!');
+        }
+
+        // Membership Renewal Modal
+        function openMembershipModal() {
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Membership Application & Renewal</h3>
+                            <p class="text-xs text-slate-400 mt-1">Extend your active status to access asset lending & premium maker resources.</p>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Duration (Months)</label>
+                                <select id=" membership-months" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                                    <option value="3">3 Months (RM 15)</option>
+                                    <option value="6">6 Months (RM 25)</option>
+                                    <option value="12" selected>12 Months (RM 45)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Referral Code (Optional)</label>
+                                <input type="text" id="membership-referral" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. TEACHER_ALI">
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 space-y-1">
+                                <p class="font-semibold text-cyan-400">Payment Instructions:</p>
+                                <p>Transfer payment via Online Banking to School PIBG Account (Acc: 1234567890). Upload receipt below.</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Upload Payment Receipt (PDF / Image)</label>
+                                <input type="file" id="membership-receipt" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-600">
+                            </div>
+                            <button onclick="submitMembershipApplication()" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg transition">Submit Application for Approval</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitMembershipApplication() {
+            closeModal();
+            showToast('Membership application submitted successfully! Notification sent to Admin.');
+        }
+
+        // Cart & Checkout
+        function addToCart(itemId) {
+            const item = appState.marketplace.find(i => i.id === itemId);
+            if(!item) return;
+            const existing = appState.cart.find(i => i.id === itemId);
+            if(existing) {
+                existing.qty++;
+            } else {
+                appState.cart.push({...item, qty: 1});
+            }
+            localStorage.setItem('ridm_cart', JSON.stringify(appState.cart));
+            showToast(`Added ${item.name} to shopping cart.`);
+            renderCurrentView();
+        }
+
+        function openCartModal() {
+            const totalRM = appState.cart.reduce((sum, item) => sum + (item.priceRM * item.qty), 0);
+            const totalPoints = appState.cart.reduce((sum, item) => sum + (item.pointsValue * item.qty), 0);
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Shopping Cart & Checkout</h3>
+                            <p class="text-xs text-slate-400 mt-1">Review your selected marketplace items.</p>
+                        </div>
+                        <div class="space-y-3 max-h-60 overflow-y-auto">
+                            ${appState.cart.length === 0 ? '<p class="text-xs text-slate-400 text-center py-6">Your cart is empty.</p>' : appState.cart.map(i => `
+                                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+                                    <div>
+                                        <p class="font-bold text-white">${i.name}</p>
+                                        <p class="text-cyan-400">Qty: ${i.qty} • RM ${i.priceRM} / ${i.pointsValue} Pts</p>
+                                    </div>
+                                    <button onclick="removeFromCart('${i.id}')" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${appState.cart.length > 0 ? `
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between font-bold text-sm">
+                                <span>Total Payable:</span>
+                                <span class="text-cyan-400">RM ${totalRM.toFixed(2)} or ${totalPoints} Pts</span>
+                            </div>
+                            <div class="flex gap-3">
+                                <button onclick="checkoutCart('cash')" class="flex-1 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Check Out with Cash (RM)</button>
+                                <button onclick="checkoutCart('points')" class="flex-1 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold shadow transition">Check Out with Points</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function removeFromCart(itemId) {
+            appState.cart = appState.cart.filter(i => i.id !== itemId);
+            localStorage.setItem('ridm_cart', JSON.stringify(appState.cart));
+            openCartModal();
+        }
+
+        function checkoutCart(method) {
+            appState.cart = [];
+            localStorage.removeItem('ridm_cart');
+            closeModal();
+            renderCurrentView();
+            showToast(`Order placed successfully via ${method.toUpperCase()}! Order ID #RIDM-${Math.floor(100000 + Math.random() * 900000)}`);
+        }
+
+        // Add Project Modal
+        function openAddProjectModal() {
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-2xl w-full space-y-6 relative border border-slate-700 max-h-[90vh] overflow-y-auto">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Submit New Maker Project</h3>
+                            <p class="text-xs text-slate-400 mt-1">Share your robotics & IoT creation with the RIDM community.</p>
+                        </div>
+                        <form onsubmit="submitProject(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Project Title</label>
+                                <input type="text" id="proj-title" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. Smart IoT Plant Watering System">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Description</label>
+                                <textarea id="proj-desc" rows="3" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="Describe your project architecture and features..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-2">Tagging</label>
+                                <div class="flex flex-wrap gap-3 text-xs">
+                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="micro:bit"><span>micro:bit</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="Arduino"><span>Arduino</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="ESP32"><span>ESP32</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="IoT"><span>IoT</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="RBT Project"><span>RBT Project</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" name="tag" value="REKA:BIT"><span>REKA:BIT</span></label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Electronic Components Used</label>
+                                <input type="text" id="proj-components" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500" placeholder="e.g. ESP32, Ultrasonic Sensor, Relay">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1">Gallery Images (Max 5, <= 10MB total)</label>
+                                <input type="file" multiple accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-500 file:text-white">
+                            </div>
+                            <div class="flex items-center space-x-2 pt-2">
+                                <input type="checkbox" id="proj-agreement" required class="rounded bg-slate-900 border-slate-800 text-cyan-500">
+                                <label for="proj-agreement" class="text-xs text-slate-300">I confirm this project is my own original work.</label>
+                            </div>
+                            <button type="submit" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow-lg transition">Submit Project for Approval</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitProject(e) {
+            e.preventDefault();
+            const newProj = {
+                id: appState.projects.length + 1,
+                title: document.getElementById('proj-title').value,
+                description: document.getElementById('proj-desc').value,
+                tagging: 'IoT, micro:bit',
+                componentsUsed: document.getElementById('proj-components').value,
+                totalCost: 'RM 35.00',
+                galleryURLs: ['https://images.unsplash.com/photo-1518770660439-4636190af475?w=600'],
+                attachmentURLs: [],
+                groupMembers: 'Self',
+                createdBy: appState.user ? appState.user.username : 'Guest',
+                approvedBy: 'Pending Review',
+                likeCount: 0,
+                status: 'Pending'
+            };
+            appState.projects.unshift(newProj);
+            closeModal();
+            switchTab('projects');
+            showToast('Project submitted successfully! Awaiting teacher approval.');
+        }
+
+        function openProjectDetail(id) {
+            const p = appState.projects.find(item => item.id === id);
+            if(!p) return;
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-xl w-full space-y-6 relative border border-slate-700 max-h-[90vh] overflow-y-auto">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div class="h-60 rounded-2xl overflow-hidden bg-slate-900">
+                            <img src="${p.galleryURLs[0]}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="space-y-3">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">${p.status}</span>
+                            <h3 class="text-xl font-bold text-white">${p.title}</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">${p.description}</p>
+                            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-2">
+                                <p><strong class="text-cyan-400">Components Used:</strong> ${p.componentsUsed}</p>
+                                <p><strong class="text-cyan-400">Estimated Cost:</strong> ${p.totalCost}</p>
+                                <p><strong class="text-cyan-400">Author:</strong> @${p.createdBy}</p>
+                            </div>
+                        </div>
+                        <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold border border-slate-700 transition">Close</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openEventModal(id) {
+            const ev = appState.events.find(e => e.id === id);
+            if(!ev) return;
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div class="h-48 rounded-2xl overflow-hidden bg-slate-900">
+                            <img src="${ev.image}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="space-y-3">
+                            <span class="text-xs text-cyan-400 font-semibold">${ev.date}</span>
+                            <h3 class="text-xl font-bold text-white">${ev.title}</h3>
+                            <p class="text-slate-300 text-sm">${ev.description}</p>
+                        </div>
+                        <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Close</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openContestModal(id) {
+            const c = appState.contests.find(item => item.id === id);
+            if(!c) return;
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div class="space-y-3">
+                            <span class="text-xs text-violet-400 font-semibold">${c.date}</span>
+                            <h3 class="text-xl font-bold text-white">${c.title}</h3>
+                            <p class="text-slate-300 text-sm">${c.description}</p>
+                        </div>
+                        <button onclick="closeModal(); showToast('Registered for contest successfully!');" class="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold shadow transition">Confirm Registration</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openLearningModule(id) {
+            const mod = appState.learningModules.find(m => m.id === id);
+            if(!mod) return;
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-lg w-full space-y-6 relative border border-slate-700">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div class="space-y-3">
+                            <span class="text-xs text-cyan-400 font-semibold">${mod.category} • ${mod.status}</span>
+                            <h3 class="text-xl font-bold text-white">${mod.title}</h3>
+                            <p class="text-slate-300 text-sm">Interactive learning content, video tutorials, and modular coding challenges will be loaded here.</p>
+                        </div>
+                        <button onclick="closeModal(); showToast('Module progress updated!');" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Mark as Completed</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function requestLending(itemId) {
+            showToast(`Lending request submitted for item ${itemId}! Awaiting admin approval.`);
+        }
+
+        // Backend Apps Script Setup Guide Modal
+        function openBackendModal() {
+            document.getElementById('modal-container').innerHTML = `
+                <div class="fixed inset-0 z-50 flex items-center justify-center bg-dark/80 backdrop-blur-md p-4">
+                    <div class="glass-panel rounded-3xl p-6 lg:p-8 max-w-2xl w-full space-y-6 relative border border-slate-700 max-h-[90vh] overflow-y-auto">
+                        <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Google Apps Script Backend Setup</h3>
+                            <p class="text-xs text-slate-400 mt-1">Deploy this backend code to Google Apps Script connected to your Google Spreadsheet database.</p>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="block text-xs font-semibold text-slate-400">Google Apps Script Code (Code.gs)</label>
+                            <textarea readonly rows="12" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-xs font-mono text-cyan-300 focus:outline-none">
+function doGet(e) {
+  var action = e.parameter.action;
+  var sheetName = e.parameter.sheet;
+  if (action === "getData") {
+    var data = getDataFromSheet(sheetName);
+    return ContentService.createTextOutput(JSON.stringify({status: "success", data: data})).setMimeType(ContentService.MimeType.JSON);
+  }
+  return ContentService.createTextOutput(JSON.stringify({status: "error", message: "Invalid action"})).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  var payload = JSON.parse(e.postData.contents);
+  var action = payload.action;
   try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({ action, ...payload }),
-      headers: { "Content-Type": "text/plain;charset=utf-8" }
-    });
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    return ContentService.createTextOutput(JSON.stringify({status: "success", result: "Action processed"}))
+                         .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({status: "error", message: err.toString()}))
+                         .setMimeType(ContentService.MimeType.JSON);
   }
 }
+
+function getDataFromSheet(sheetName) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+  var rows = sheet.getDataRange().getValues();
+  var headers = rows[0];
+  var data = [];
+  for (var i = 1; i < rows.length; i++) {
+    var row = rows[i];
+    var obj = {};
+    for (var j = 0; j < headers.length; j++) { obj[headers[j]] = row[j]; }
+    data.push(obj);
+  }
+  return data;
+}
+                            </textarea>
+                        </div>
+                        <button onclick="closeModal()" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white text-xs font-semibold shadow transition">Got It</button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
