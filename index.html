@@ -484,30 +484,86 @@
 
             if (!dropZone || !fileInput || !previewContainer) return;
 
-            let uploadedImages = [];
+            let uploadedImages = []; // Stores URLs or base64 previews
 
-            const handleFiles = (files) => {
+            const compressAndProcessImage = (file) => {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            // Max dimensions for compression
+                            const MAX_WIDTH = 1024;
+                            const MAX_HEIGHT = 1024;
+                            if (width > height) {
+                                if (width > MAX_WIDTH) {
+                                    height *= MAX_WIDTH / width;
+                                    width = MAX_WIDTH;
+                                }
+                            } else {
+                                if (height > MAX_HEIGHT) {
+                                    width *= MAX_HEIGHT / height;
+                                    height = MAX_HEIGHT;
+                                }
+                            }
+                            
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            // Compress to JPEG with 0.8 quality
+                            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                            resolve(compressedDataUrl);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            };
+
+            const handleFiles = async (files) => {
                 if (uploadedImages.length + files.length > 5) {
                     alertModal('Upload Limit Exceeded', 'You can upload a maximum of 5 images.');
                     return;
                 }
-                Array.from(files).forEach(file => {
-                    if (file.size > 10 * 1024 * 1024) {
-                        alertModal('File Too Large', `File "${file.name}" exceeds the 10MB size limit.`);
-                        return;
+                
+                for (let file of Array.from(files)) {
+                    if (file.size > 15 * 1024 * 1024) {
+                        alertModal('File Too Large', `File "${file.name}" exceeds size limit.`);
+                        continue;
                     }
                     if (!file.type.startsWith('image/')) {
                         alertModal('Invalid File Type', `File "${file.name}" is not a valid image.`);
-                        return;
+                        continue;
                     }
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        uploadedImages.push(e.target.result);
-                        renderPreviews();
-                        if (onImagesUpdated) onImagesUpdated(uploadedImages);
-                    };
-                    reader.readAsDataURL(file);
-                });
+                    
+                    // Compress image locally first
+                    const compressedBase64 = await compressAndProcessImage(file);
+                    
+                    // Upload directly to Google Drive via Apps Script API
+                    try {
+                        const res = await api.run('uploadImage', {
+                            base64Data: compressedBase64,
+                            fileName: file.name
+                        });
+                        
+                        if (res && res.success) {
+                            uploadedImages.push(res.url); // Direct lh3.googleusercontent.com link
+                            renderPreviews();
+                            if (onImagesUpdated) onImagesUpdated(uploadedImages);
+                        } else {
+                            alertModal('Upload Failed', res.message || 'Could not upload to Google Drive.');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alertModal('Upload Error', err.message);
+                    }
+                }
             };
 
             const renderPreviews = () => {
