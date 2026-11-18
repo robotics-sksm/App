@@ -1772,16 +1772,20 @@
             }
         }
 
-        // Check if URL contained reset token parameters on page load
+        // Check if URL contains reset token parameters on GitHub Pages
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const tokenFromUrl = urlParams.get('resetToken') || '<?= resetToken ?>';
-            const usernameFromUrl = urlParams.get('username') || '<?= resetUsername ?>';
+            const tokenFromUrl = urlParams.get('resetToken');
+            const usernameFromUrl = urlParams.get('username');
 
-            if (tokenFromUrl && tokenFromUrl !== '<?= resetToken ?>' && usernameFromUrl && usernameFromUrl !== '<?= resetUsername ?>') {
+            if (tokenFromUrl && usernameFromUrl) {
                 document.getElementById('resetTokenVal').value = tokenFromUrl;
                 document.getElementById('resetUsernameVal').value = usernameFromUrl;
-                document.getElementById('resetModalUsernameDisplay').innerText = 'For Username: ' + usernameFromUrl;
+                
+                const displayElem = document.getElementById('resetModalUsernameDisplay');
+                if (displayElem) {
+                    displayElem.innerText = 'For Username: ' + usernameFromUrl;
+                }
                 openModal('resetPasswordModal');
             }
         });
