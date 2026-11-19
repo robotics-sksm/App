@@ -1518,7 +1518,7 @@
             }
             
             const unElem = document.getElementById('headerUsername');
-            if(unElem) unElem.innerText = currentUser.Username + <br> ' (' + (currentUser.Role || 'Member') + ')';
+            if(unElem) unElem.innerText = currentUser.Username + ' (' + (currentUser.Role || 'Member') + ')';
             if(currentUser.ProfileImageBase64) {
                 const av = document.getElementById('headerAvatar');
                 if(av) av.src = currentUser.ProfileImageBase64;
