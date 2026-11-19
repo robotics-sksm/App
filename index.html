@@ -1685,12 +1685,14 @@
             openModal('detailModal');
         }
 
-        async function requestLending(itemID) {
-            if(!currentUser) {
+        async function requestLending(itemID, btnElem) {
+            if (!currentUser) {
                 alertModal('Authentication Required', 'Please sign in to request equipment lending.');
                 openModal('loginModal');
                 return;
             }
+            if (btnElem) setButtonLoading(btnElem, true);
+        
             const dueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
             try {
                 const res = await api.run('requestLending', { username: currentUser.Username, itemID, dueDate });
