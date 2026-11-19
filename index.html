@@ -121,9 +121,9 @@
         </nav>
 
         <!-- Right Header Area -->
-        <div class="flex items-center space-x-3">
-            <button onclick="toggleTheme()" class="w-9 h-9 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
-                <i id="themeIcon" class="fa-solid fa-moon"></i>
+         <div class="flex items-center space-x-2 sm:space-x-3">
+            <button onclick="toggleTheme()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
+                <i id="themeIcon" class="fa-solid fa-moon text-xs sm:text-sm"></i>
             </button>
 
             <div id="authHeaderSection" class="flex items-center space-x-2">
@@ -131,16 +131,22 @@
                 <button onclick="openModal('registerModal')" class="px-4 py-1.5 text-xs font-semibold rounded-full bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white shadow-md shadow-cyan-500/20 transition-all">Register</button>
             </div>
 
-            <div id="userHeaderSection" class="hidden items-center space-x-3">
-                <button onclick="openCartModal()" class="relative p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition-colors">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span id="cartBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-cyan-500 text-slate-950 font-bold text-xs rounded-full flex items-center justify-center">0</span>
+            <div id="userHeaderSection" class="hidden items-center space-x-2 sm:space-x-3">
+                <button onclick="openCartModal()" class="relative p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition-colors" title="Cart">
+                    <i class="fa-solid fa-cart-shopping text-xs sm:text-sm"></i>
+                    <span id="cartBadge" class="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-cyan-500 text-slate-950 font-bold text-[10px] sm:text-xs rounded-full flex items-center justify-center">0</span>
                 </button>
-                <div onclick="openProfileModal()" class="flex items-center space-x-2 cursor-pointer bg-slate-800/80 hover:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 transition-all">
-                    <img id="headerAvatar" src="https://placehold.co/100x100/06b6d4/ffffff?text=U" class="w-6 h-6 rounded-full object-cover" alt="Avatar">
-                    <span id="headerUsername" class="text-xs font-semibold text-cyan-300">Username</span>
+                <button onclick="openOrdersModal()" class="p-2 rounded-full bg-slate-800 text-slate-300 hover:text-white transition-colors" title="My Orders">
+                    <i class="fa-solid fa-receipt text-xs sm:text-sm"></i>
+                </button>
+                <div onclick="openProfileModal()" class="flex items-center space-x-2 cursor-pointer bg-slate-800/80 hover:bg-slate-800 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-slate-700 transition-all">
+                    <img id="headerAvatar" src="https://placehold.co/100x100/06b6d4/ffffff?text=U" class="w-6 h-6 rounded-full object-cover flex-shrink-0" alt="Avatar">
+                    <div id="headerUserDisplay" class="flex flex-col text-left leading-tight">
+                        <span id="headerUsername" class="text-xs font-bold text-cyan-300">Username</span>
+                        <span id="headerRole" class="text-[10px] text-slate-400 font-normal">(Member)</span>
+                    </div>
                 </div>
-                <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition-all flex items-center space-x-1" title="Log Out">
+                <button onclick="handleLogout()" class="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 text-xs font-bold transition-all flex items-center space-x-1" title="Log Out">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span class="hidden sm:inline">Logout</span>
                 </button>
@@ -286,6 +292,10 @@
                     <button id="adminAddMarketBtn" onclick="openMarketplaceModal()" class="hidden px-4 py-2 rounded-xl bg-violet-600 text-white font-bold text-xs flex items-center space-x-1">
                         <i class="fa-solid fa-plus"></i><span>Add Market Item</span>
                     </button>
+                    <button onclick="openOrdersModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold flex items-center space-x-2">
+                        <i class="fa-solid fa-receipt text-cyan-400"></i>
+                        <span>My Orders</span>
+                    </button>
                     <button onclick="openCartModal()" class="px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-bold flex items-center space-x-2">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span>View Cart (<span id="cartCountHeader">0</span>)</span>
@@ -355,7 +365,7 @@
             <p id="deleteMessagesConfirmText" class="text-xs text-slate-300">Are you sure to delete 0 message?</p>
             <div class="flex space-x-3 pt-2">
                 <button type="button" onclick="closeModal('deleteMessagesModal')" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700">No</button>
-                <button type="button" onclick="confirmDeleteSelectedMessages()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20">Yes</button>
+                <button id="confirmDeleteBtn" type="button" onclick="confirmDeleteSelectedMessages()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20">Yes</button>
             </div>
         </div>
     </div>
@@ -387,7 +397,7 @@
                     <div class="flex justify-end">
                         <button type="button" onclick="toggleForgotView(true)" class="text-xs text-cyan-400 hover:underline">Forgot username / password?</button>
                     </div>
-                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Sign In</button>
+                    <button id="loginSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Sign In</button>
                 </form>
             </div>
 
@@ -403,8 +413,8 @@
                         <input type="email" id="forgotEmailInput" required placeholder="name@example.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
                     </div>
                     <div class="flex space-x-2 pt-2">
-                        <button type="button" onclick="handleCheckUsernameByEmail()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 font-bold text-xs">Check Username</button>
-                        <button type="button" onclick="handleResetPasswordByEmail()" class="flex-1 py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Reset Password</button>
+                        <button id="forgotUsernameBtn" type="button" onclick="handleCheckUsernameByEmail()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 font-bold text-xs">Check Username</button>
+                        <button id="forgotResetBtn" type="button" onclick="handleResetPasswordByEmail()" class="flex-1 py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Reset Password</button>
                     </div>
                     <div class="text-center pt-2">
                         <button type="button" onclick="toggleForgotView(false)" class="text-xs text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Sign In</button>
@@ -455,7 +465,7 @@
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Register</button>
+                <button id="registerSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Register</button>
             </form>
         </div>
     </div>
@@ -490,7 +500,7 @@
                         </button>
                     </div>
                 </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Update Password</button>
+                <button id="resetPasswordSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Update Password</button>
             </form>
         </div>
     </div>
@@ -521,7 +531,7 @@
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Receipt URL / Notes</label>
                     <input type="text" id="membershipReceiptURL" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
                 </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Submit Application</button>
+                <button id="membershipSubmitBtn" type="submit" class="w-full py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all">Submit Application</button>
             </form>
         </div>
     </div>
@@ -546,8 +556,8 @@
                     <p id="cartTotalPrice" class="text-lg font-bold text-cyan-400">RM 0.00 / 0 Points</p>
                 </div>
                 <div class="flex space-x-2">
-                    <button onclick="checkoutCart('Cash')" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Checkout Cash</button>
-                    <button onclick="checkoutCart('Points')" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Checkout Points</button>
+                    <button id="checkoutCashBtn" onclick="checkoutCart('Cash', this)" class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Checkout Cash</button>
+                    <button id="checkoutPointsBtn" onclick="checkoutCart('Points', this)" class="px-4 py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Checkout Points</button>
                 </div>
             </div>
         </div>
@@ -931,7 +941,7 @@
                                 <input type="text" id="profWhatsApp" value="${escapeAttr(currentUser.WhatsApp || '')}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                             </div>
                         </div>
-                        <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Save Profile</button>
+                        <button id="profileSaveBtn" type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Save Profile</button>
                     </form>
                 </div>
             `;
@@ -952,6 +962,9 @@
 
         async function handleProfileSaveSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('profileSaveBtn');
+            setButtonLoading(btn, true);
+
             const fullName = document.getElementById('profFullName').value;
             const icNumber = document.getElementById('profIC').value;
             const school = document.getElementById('profSchool').value;
@@ -978,7 +991,6 @@
             }
 
             try {
-                
                 const res = await api.run('updateProfile', {
                     username: currentUser.Username,
                     fullName,
@@ -990,6 +1002,8 @@
                     whatsApp,
                     profileImageBase64
                 });
+
+                setButtonLoading(btn, false);
 
                 if (res && res.success !== false) {
                     currentUser.FullName = fullName;
@@ -1008,6 +1022,7 @@
                     alertModal('Update Failed', res.message || 'Could not update profile.');
                 }
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Error', err.message);
             }
         }
@@ -1045,8 +1060,8 @@
                         '</div>' +
                     '</div>' +
                     '<div class="p-4 pt-0 space-y-2">' +
-                        '<button onclick="requestLending(\'' + escapeAttr(item.ItemID) + '\')" class="w-full py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-all">Request Lending</button>' +
-                        (isAdmin ? '<div class="flex space-x-2"><button onclick="openInventoryModal(\'' + escapeAttr(item.ItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold">Edit</button><button onclick="deleteInventoryItem(\'' + escapeAttr(item.ItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-semibold">Delete</button></div>' : '') +
+                        '<button onclick="requestLending(\'' + escapeAttr(item.ItemID) + '\', this)" class="w-full py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-all">Request Lending</button>' +
+                        (isAdmin ? '<div class="flex space-x-2"><button onclick="openInventoryModal(\'' + escapeAttr(item.ItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold">Edit</button><button onclick="deleteInventoryItem(\'' + escapeAttr(item.ItemID) + '\', this)" class="flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-semibold">Delete</button></div>' : '') +
                     '</div>' +
                 '</div>'
             ).join('');
@@ -1152,7 +1167,7 @@
                     '</div>' +
                     '<div class="p-4 pt-0 space-y-2">' +
                         '<button onclick="addToCart(\'' + escapeAttr(m.MarketItemID) + '\')" class="w-full py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:opacity-90 text-white font-bold text-xs shadow">Add to Cart</button>' +
-                        (isAdmin ? '<div class="flex space-x-2"><button onclick="openMarketplaceModal(\'' + escapeAttr(m.MarketItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold">Edit</button><button onclick="deleteMarketItem(\'' + escapeAttr(m.MarketItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-semibold">Delete</button></div>' : '') +
+                        (isAdmin ? '<div class="flex space-x-2"><button onclick="openMarketplaceModal(\'' + escapeAttr(m.MarketItemID) + '\')" class="flex-1 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-semibold">Edit</button><button onclick="deleteMarketItem(\'' + escapeAttr(m.MarketItemID) + '\', this)" class="flex-1 py-1.5 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-semibold">Delete</button></div>' : '') +
                     '</div>' +
                 '</div>'
             ).join('');
@@ -1355,7 +1370,59 @@
             openCartModal();
         }
 
-        async function checkoutCart(method) {
+                function openOrdersModal() {
+            if (!currentUser) {
+                alertModal('Authentication Required', 'Please sign in to view your orders.');
+                openModal('loginModal');
+                return;
+            }
+
+            const orders = (appData.Orders || []).filter(o => String(o.Username || '').trim().toLowerCase() === String(currentUser.Username || '').trim().toLowerCase());
+
+            let content = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-receipt text-cyan-400"></i>
+                            <span>My Orders & Checkout History</span>
+                        </h3>
+                    </div>
+            `;
+
+            if (orders.length === 0) {
+                content += '<p class="text-xs text-slate-400 text-center py-6">No order records found in your account.</p>';
+            } else {
+                content += '<div class="space-y-3 max-h-[60vh] overflow-y-auto pr-1">' + orders.map(o => {
+                    let dateStr = o.Timestamp ? new Date(o.Timestamp).toLocaleString() : (o.OrderDate || 'Recent');
+                    let statusColor = 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
+                    const st = String(o.Status || '').toLowerCase();
+                    if (st.includes('completed') || st.includes('paid')) statusColor = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+                    else if (st.includes('pending')) statusColor = 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+                    else if (st.includes('cancelled')) statusColor = 'bg-rose-500/20 text-rose-300 border-rose-500/40';
+
+                    return `
+                        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                            <div class="flex flex-wrap justify-between items-center text-xs gap-1">
+                                <span class="font-bold text-white">Order ID: <span class="text-cyan-400">${escapeAttr(o.OrderID || o.ID || 'ORD-NEW')}</span></span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${statusColor}">${escapeAttr(o.Status || 'Processing')}</span>
+                            </div>
+                            <p class="text-xs text-slate-300"><strong class="text-slate-400">Items:</strong> ${escapeAttr(o.ItemsSummary || o.Items || 'Marketplace Item')}</p>
+                            <div class="flex justify-between items-center text-[11px] text-slate-400 pt-1 border-t border-slate-800/80">
+                                <span>Payment: <strong class="text-slate-200">${escapeAttr(o.PaymentMethod || 'Cash')}</strong></span>
+                                <span>Total: <strong class="text-cyan-300">RM ${Number(o.TotalPaid || 0).toFixed(2)}</strong></span>
+                                <span>${escapeAttr(dateStr)}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('') + '</div>';
+            }
+
+            content += '</div>';
+            document.getElementById('detailModalContent').innerHTML = content;
+            openModal('detailModal');
+        }
+
+        async function checkoutCart(method, btnElem) {
             if(cart.length === 0) {
                 alertModal('Cart Empty', 'Your cart is empty.');
                 return;
@@ -1365,6 +1432,10 @@
                 openModal('loginModal');
                 return;
             }
+
+            const btn = btnElem || (method === 'Cash' ? document.getElementById('checkoutCashBtn') : document.getElementById('checkoutPointsBtn'));
+            setButtonLoading(btn, true);
+
             const totalPaid = cart.reduce((sum, i) => sum + i.price, 0);
             try {
                 const res = await api.run('checkoutOrder', {
@@ -1373,15 +1444,18 @@
                     totalPaid: totalPaid,
                     paymentMethod: method
                 });
-                alertModal('Order Confirmed', res.message || 'Order successfully processed.');
+                setButtonLoading(btn, false);
                 cart = [];
                 const badge = document.getElementById('cartBadge');
                 const countHeader = document.getElementById('cartCountHeader');
                 if(badge) badge.innerText = 0;
                 if(countHeader) countHeader.innerText = 0;
+
                 closeModal('cartModal');
-                loadServerData();
+                await loadServerData();
+                openOrdersModal();
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Checkout Failed', err.message);
             }
         }
@@ -1413,21 +1487,23 @@
 
         async function handleRegisterSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('registerSubmitBtn');
             const username = document.getElementById('regUsername').value;
             const fullName = document.getElementById('regFullName').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
             const confirmPassword = document.getElementById('regConfirmPassword').value;
-
-            setButtonLoading(btn, true);
             
             if (password !== confirmPassword) {
                 alertModal('Password Mismatch', 'The passwords entered do not match. Please re-enter.');
                 return;
             }
 
+            setButtonLoading(btn, true);
+
             try {
                 const res = await api.run('register', { username, fullName, email, password });
+                setButtonLoading(btn, false);
                 if(res && res.success) {
                     alertModal('Registration Successful', res.message);
                     closeModal('registerModal');
@@ -1436,6 +1512,7 @@
                     alertModal('Registration Failed', res ? res.message : 'Unknown error');
                 }
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Registration Failed', err.message);
             }
         }
@@ -1453,31 +1530,39 @@
         }
 
         async function handleCheckUsernameByEmail() {
+            const btn = document.getElementById('forgotUsernameBtn');
             const email = document.getElementById('forgotEmailInput').value.trim();
             if (!email) {
                 alertModal('Input Required', 'Please enter your registered email address.');
                 return;
             }
+            setButtonLoading(btn, true);
             try {
                 const res = await api.run('forgotPassword', { email, mode: 'username' });
+                setButtonLoading(btn, false);
                 alertModal('Username Recovery', res.message);
                 if (res.success) toggleForgotView(false);
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Error', err.message);
             }
         }
 
         async function handleResetPasswordByEmail() {
+            const btn = document.getElementById('forgotResetBtn');
             const email = document.getElementById('forgotEmailInput').value.trim();
             if (!email) {
                 alertModal('Input Required', 'Please enter your registered email address.');
                 return;
             }
+            setButtonLoading(btn, true);
             try {
                 const res = await api.run('forgotPassword', { email, mode: 'reset' });
+                setButtonLoading(btn, false);
                 alertModal('Password Reset', res.message);
                 if (res.success) toggleForgotView(false);
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Error', err.message);
             }
         }
@@ -1489,6 +1574,9 @@
                 openModal('loginModal');
                 return;
             }
+           const btn = document.getElementById('membershipSubmitBtn');
+            setButtonLoading(btn, true);
+
             const monthsRequested = document.getElementById('membershipMonths').value;
             const referralCode = document.getElementById('membershipReferral').value;
             const receiptURL = document.getElementById('membershipReceiptURL').value;
@@ -1500,11 +1588,13 @@
                     referralCode,
                     receiptURL
                 });
+                setButtonLoading(btn, false);
                 alertModal('Application Submitted', res.message || 'Submitted successfully');
                 closeModal('membershipModal');
-            } catch (err) {
-                alertModal('Submission Failed', err.message);
-            }
+                } catch (err) {
+                    setButtonLoading(btn, false);
+                    alertModal('Submission Failed', err.message);
+                }
         }
 
         function updateAuthUI() {
@@ -1518,7 +1608,11 @@
             }
             
             const unElem = document.getElementById('headerUsername');
-            if(unElem) unElem.innerText = currentUser.Username + ' (' + (currentUser.Role || 'Member') + ')';
+            const roleElem = document.getElementById('headerRole');
+
+            if (unElem) unElem.innerText = currentUser.Username;
+            if (roleElem) roleElem.innerText = '(' + (currentUser.Role || 'Member') + ')';
+
             if(currentUser.ProfileImageBase64) {
                 const av = document.getElementById('headerAvatar');
                 if(av) av.src = currentUser.ProfileImageBase64;
@@ -1600,9 +1694,11 @@
             const dueDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
             try {
                 const res = await api.run('requestLending', { username: currentUser.Username, itemID, dueDate });
+                if (btnElem) setButtonLoading(btnElem, false);
                 alertModal('Lending Requested', res.message || 'Requested successfully');
                 loadServerData();
             } catch (err) {
+                if (btnElem) setButtonLoading(btnElem, false);
                 alertModal('Request Failed', err.message);
             }
         }
@@ -1775,6 +1871,9 @@
 
         async function handleProjectSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('projectSubmitBtn');
+            setButtonLoading(btn, true);
+
             const projectTitle = document.getElementById('subTitle').value;
             const description = document.getElementById('subDesc').value;
             const tagging = document.getElementById('subTags').value;
@@ -1795,11 +1894,13 @@
                     tagging,
                     galleryURLs,
                     username: currentUser.Username
-                });
+                });                
+                setButtonLoading(btn, false);
                 alertModal('Submitted', res.message || 'Project submitted successfully');
                 closeModal('detailModal');
                 loadServerData();
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Submission Failed', err.message);
             }
         }
@@ -1843,7 +1944,7 @@
                         </div>
                         <div id="inventoryPreviews" class="flex flex-wrap gap-2 mt-2"></div>
                     </div>
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Save Inventory Item</button>
+                    <button id="inventorySaveBtn" type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Save Inventory Item</button>
                 </form>
             `;
             openModal('detailModal');
@@ -1857,6 +1958,9 @@
 
         async function handleInventorySaveSubmit(e, itemID) {
             e.preventDefault();
+            const btn = document.getElementById('inventorySaveBtn');
+            setButtonLoading(btn, true);
+
             const itemName = document.getElementById('invName').value;
             const category = document.getElementById('invCategory').value;
             const totalStock = document.getElementById('invTotalStock').value;
@@ -1874,21 +1978,27 @@
 
             try {
                 const res = await api.run('saveInventoryItem', { itemID, itemName, category, totalStock, availableStock, status, imageURL });
+                setButtonLoading(btn, false);
                 alertModal('Success', res.message || 'Saved successfully');
                 closeModal('detailModal');
                 loadServerData();
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Save Failed', err.message);
             }
         }
 
-        async function deleteInventoryItem(itemID) {
+        async function deleteInventoryItem(itemID, btnElem) {
             if(!confirm('Are you sure you want to delete this inventory item?')) return;
+            if (btnElem) setButtonLoading(btnElem, true);
+
             try {
                 const res = await api.run('deleteInventoryItem', { itemID });
+                if (btnElem) setButtonLoading(btnElem, false);
                 alertModal('Deleted', res.message || 'Deleted successfully');
                 loadServerData();
             } catch (err) {
+                if (btnElem) setButtonLoading(btnElem, false);
                 alertModal('Delete Failed', err.message);
             }
         }
@@ -1929,7 +2039,7 @@
                         </div>
                         <div id="marketPreviews" class="flex flex-wrap gap-2 mt-2"></div>
                     </div>
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Save Marketplace Item</button>
+                    <button id="marketSaveBtn" type="submit" class="w-full py-2.5 rounded-xl bg-violet-600 hover:opacity-90 text-white font-bold text-xs">Save Marketplace Item</button>
                 </form>
             `;
             openModal('detailModal');
@@ -1943,6 +2053,9 @@
 
         async function handleMarketSaveSubmit(event, marketItemID) {
             event.preventDefault();
+            const btn = document.getElementById('marketSaveBtn');
+            setButtonLoading(btn, true);
+
             const itemName = document.getElementById('mktName').value;
             const description = document.getElementById('mktDesc').value;
             const priceRM = document.getElementById('mktPrice').value;
@@ -1960,21 +2073,27 @@
 
             try {
                 const res = await api.run('saveMarketItem', { marketItemID, itemName, description, priceRM, pointsValue, stock, imageURL });
+                setButtonLoading(btn, false);
                 alertModal('Success', res.message || 'Saved successfully');
                 closeModal('detailModal');
                 loadServerData();
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Save Failed', err.message);
             }
         }
 
-        async function deleteMarketItem(marketItemID) {
+        async function deleteMarketItem(marketItemID, btnElem) {
             if(!confirm('Are you sure you want to delete this marketplace item?')) return;
+            if (btnElem) setButtonLoading(btnElem, true);
+
             try {
                 const res = await api.run('deleteMarketItem', { marketItemID });
+                if (btnElem) setButtonLoading(btnElem, false);
                 alertModal('Deleted', res.message || 'Deleted successfully');
                 loadServerData();
             } catch (err) {
+                if (btnElem) setButtonLoading(btnElem, false);
                 alertModal('Delete Failed', err.message);
             }
         }
@@ -1999,18 +2118,23 @@
 
         async function handleResetPasswordSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('resetPasswordSubmitBtn');
+            setButtonLoading(btn, true);
+
             const token = document.getElementById('resetTokenVal').value;
             const username = document.getElementById('resetUsernameVal').value;
             const newPassword = document.getElementById('newPasswordInput').value;
             const confirmPassword = document.getElementById('confirmNewPasswordInput').value;
 
             if (newPassword !== confirmPassword) {
+                setButtonLoading(btn, false);
                 alertModal('Password Mismatch', 'The new passwords entered do not match.');
                 return;
             }
 
             try {
                 const res = await api.run('confirmPasswordReset', { token, username, newPassword });
+                setButtonLoading(btn, false);
                 if (res && res.success) {
                     alertModal('Password Updated', res.message);
                     closeModal('resetPasswordModal');
@@ -2021,6 +2145,7 @@
                     alertModal('Reset Failed', res.message || 'The link may have expired (5-minute limit).');
                 }
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Error', err.message);
             }
         }
