@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Robotics, Innovation & Digital Maker (RIDM) Hub</title>
@@ -64,11 +64,20 @@
         }
         .slider-btn.prev { left: 10px; }
         .slider-btn.next { right: 10px; }
+        .safe-top-header {
+            padding-top: calc(0.75rem + env(safe-area-inset-top));
+        }
+        .safe-bottom-nav {
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+        }
+        .safe-main-pb {
+            padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+        }
     </style>
 </head>
 <body class="bg-darkBg text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <header class="sticky top-0 z-50 bg-darkCard/80 backdrop-blur-md border-b border-darkBorder px-4 py-3 flex items-center justify-between">
+    <header class="safe-top-header sticky top-0 z-50 bg-darkCard/80 backdrop-blur-md border-b border-darkBorder px-4 pb-3 flex items-center justify-between">
         <div class="flex items-center space-x-3">
             <div class="w-14 h-12 rounded-xl flex items-center justify-center">
               <img src="assets/img/RIDM.png" alt="Logo" class="w-14 h-14">
@@ -139,7 +148,7 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 pb-24 md:pb-8">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 safe-main-pb md:pb-8">
         
         <!-- HOME TAB -->
         <section id="tab-home" class="tab-content space-y-8">
@@ -296,7 +305,17 @@
                     </h3>
                     <p class="text-xs text-slate-400">Communicate with peers and manage drafts.</p>
                 </div>
-                <button onclick="openSendMessageModal()" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow">Compose Message</button>
+                <div id="inboxActionBar" class="flex items-center space-x-2 w-full sm:w-auto">
+                    <button id="inboxSelectBtn" onclick="toggleInboxSelectMode()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all">
+                        Select
+                    </button>
+                    <button id="inboxComposeBtn" onclick="openSendMessageModal()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow transition-all">
+                        Compose Message
+                    </button>
+                    <button id="inboxDeleteBtn" onclick="openDeleteMessagesConfirm()" class="hidden flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow transition-all">
+                        Delete
+                    </button>
+                </div>
             </div>
             <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 shadow-xl">
                 <div id="messagesList" class="space-y-4"></div>
@@ -305,33 +324,51 @@
 
     </main>
 
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-darkCard/95 backdrop-blur-md border-t border-darkBorder px-4 py-2 flex justify-around items-center z-50">
-        <button onclick="switchTab('home')" class="mobile-nav-btn flex flex-col items-center text-cyan-400 text-xs" data-tab="home">
-            <i class="fa-solid fa-house text-lg"></i>
-            <span>Home</span>
+    <nav class="safe-bottom-nav md:hidden fixed bottom-0 left-0 right-0 bg-darkCard/95 backdrop-blur-md border-t border-darkBorder px-2 pt-2 flex justify-between items-center z-50">
+        <button onclick="switchTab('home')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-cyan-400 text-[11px] gap-0.5 py-0.5" data-tab="home">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="whitespace-nowrap">Home</span>
         </button>
-        <button onclick="switchTab('inventory')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="inventory">
-            <i class="fa-solid fa-toolbox text-lg"></i>
-            <span>Inventory</span>
+        <button onclick="switchTab('inventory')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="inventory">
+            <i class="fa-solid fa-toolbox text-base"></i>
+            <span class="whitespace-nowrap">Inventory</span>
         </button>
-        <button onclick="switchTab('learning')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="learning">
-            <i class="fa-solid fa-graduation-cap text-lg"></i>
-            <span>Learning</span>
+        <button onclick="switchTab('learning')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="learning">
+            <i class="fa-solid fa-graduation-cap text-base"></i>
+            <span class="whitespace-nowrap">Learning</span>
         </button>
-        <button onclick="switchTab('projects')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="projects">
-            <i class="fa-solid fa-lightbulb text-lg"></i>
-            <span>Projects</span>
+        <button onclick="switchTab('projects')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="projects">
+            <i class="fa-solid fa-lightbulb text-base"></i>
+            <span class="whitespace-nowrap">Projects</span>
         </button>
-        <button onclick="switchTab('marketplace')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="marketplace">
-            <i class="fa-solid fa-store text-lg"></i>
-            <span>Market</span>
+        <button onclick="switchTab('marketplace')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="marketplace">
+            <i class="fa-solid fa-store text-base"></i>
+            <span class="whitespace-nowrap">Market</span>
         </button>
-        <button onclick="switchTab('inbox')" class="mobile-nav-btn flex flex-col items-center text-slate-400 text-xs" data-tab="inbox">
-            <i class="fa-solid fa-envelope text-lg"></i>
-            <span>Inbox</span>
+        <button onclick="switchTab('inbox')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="inbox">
+            <i class="fa-solid fa-envelope text-base"></i>
+            <span class="whitespace-nowrap">Inbox</span>
         </button>
     </nav>
 
+    <!-- Delete Messages Confirmation Modal -->
+    <div id="deleteMessagesModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-darkCard border border-darkBorder rounded-3xl w-full max-w-sm p-6 space-y-5 shadow-2xl text-center">
+            <div class="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 mx-auto flex items-center justify-center text-xl">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h4 class="text-lg font-bold text-white">Confirm Delete</h4>
+            <p id="deleteMessagesConfirmText" class="text-xs text-slate-300">Are you sure to delete 0 message?</p>
+            <div class="flex space-x-3 pt-2">
+                <button type="button" onclick="closeModal('deleteMessagesModal')" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700">
+                    No
+                </button>
+                <button type="button" onclick="confirmDeleteSelectedMessages()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Login Modal -->
     <div id="loginModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -558,6 +595,9 @@
         
         let currentUser = null;
         let cart = [];
+        let inboxSelectMode = false;
+        let selectedMessageIds = new Set();
+
         let appData = {
             Users: [],
             Projects: [],
@@ -1101,6 +1141,99 @@
             ).join('');
         }
 
+        
+        // --- INBOX SELECT & DELETE FUNCTIONS ---
+        function toggleInboxSelectMode() {
+            inboxSelectMode = !inboxSelectMode;
+            const selectBtn = document.getElementById('inboxSelectBtn');
+            const composeBtn = document.getElementById('inboxComposeBtn');
+            const deleteBtn = document.getElementById('inboxDeleteBtn');
+
+            if (inboxSelectMode) {
+                selectedMessageIds.clear();
+                if (selectBtn) selectBtn.innerText = 'Cancel';
+                if (composeBtn) composeBtn.classList.add('hidden');
+                if (deleteBtn) {
+                    deleteBtn.classList.remove('hidden');
+                    deleteBtn.innerText = 'Delete';
+                }
+            } else {
+                selectedMessageIds.clear();
+                if (selectBtn) selectBtn.innerText = 'Select';
+                if (composeBtn) composeBtn.classList.remove('hidden');
+                if (deleteBtn) deleteBtn.classList.add('hidden');
+            }
+            renderMessages();
+        }
+
+        function handleMessageCheckboxChange(msgId, isChecked) {
+            const key = String(msgId);
+            if (isChecked) {
+                selectedMessageIds.add(key);
+            } else {
+                selectedMessageIds.delete(key);
+            }
+            const deleteBtn = document.getElementById('inboxDeleteBtn');
+            if (deleteBtn) {
+                deleteBtn.innerText = selectedMessageIds.size > 0
+                    ? `Delete (${selectedMessageIds.size})`
+                    : 'Delete';
+            }
+        }
+
+        function openDeleteMessagesConfirm() {
+            const count = selectedMessageIds.size;
+            if (count === 0) {
+                alertModal('No Message Selected', 'Please tick at least one message to delete.');
+                return;
+            }
+            const noun = count === 1 ? 'message' : 'messages';
+            const textEl = document.getElementById('deleteMessagesConfirmText');
+            if (textEl) {
+                textEl.innerText = `Are you sure to delete ${count} ${noun}?`;
+            }
+            openModal('deleteMessagesModal');
+        }
+
+        async function confirmDeleteSelectedMessages() {
+            const idsToDelete = Array.from(selectedMessageIds);
+            closeModal('deleteMessagesModal');
+
+            if (idsToDelete.length === 0) return;
+
+            try {
+                const res = await api.run('deleteMessages', {
+                    messageIds: idsToDelete,
+                    username: currentUser ? currentUser.Username : ''
+                });
+
+                if (res && res.success !== false) {
+                    appData.Messages = (appData.Messages || []).filter(
+                        m => !idsToDelete.includes(String(m.MessageID))
+                    );
+                    inboxSelectMode = false;
+                    selectedMessageIds.clear();
+
+                    const selectBtn = document.getElementById('inboxSelectBtn');
+                    const composeBtn = document.getElementById('inboxComposeBtn');
+                    const deleteBtn = document.getElementById('inboxDeleteBtn');
+                    if (selectBtn) selectBtn.innerText = 'Select';
+                    if (composeBtn) composeBtn.classList.remove('hidden');
+                    if (deleteBtn) {
+                        deleteBtn.classList.add('hidden');
+                        deleteBtn.innerText = 'Delete';
+                    }
+
+                    renderMessages();
+                    alertModal('Deleted', res.message || `${idsToDelete.length} message(s) deleted.`);
+                } else {
+                    alertModal('Delete Failed', res.message || 'Could not delete selected messages.');
+                }
+            } catch (err) {
+                alertModal('Delete Failed', err.message);
+            }
+        }
+
         function renderMessages() {
             const list = document.getElementById('messagesList');
             if(!list) return;
@@ -1116,7 +1249,9 @@
                 list.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No messages in inbox.</p>';
                 return;
             }
-            list.innerHTML = userMessages.map(msg => {
+            list.innerHTML = userMessages.map((msg, idx) => {
+                const msgId = String(msg.MessageID || `msg-idx-${idx}`);
+                const isChecked = selectedMessageIds.has(msgId);
                 let dateStr = '';
                 if (msg.Timestamp) {
                     try {
@@ -1126,13 +1261,20 @@
                         dateStr = String(msg.Timestamp);
                     }
                 }
-                return '<div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">' +
-                    '<div class="flex justify-between text-xs text-slate-400">' +
-                        '<span>From: <strong class="text-cyan-400">' + escapeAttr(msg.SenderUsername) + '</strong> | To: <strong class="text-cyan-400">' + escapeAttr(msg.RecipientUsername) + '</strong></span>' +
-                        '<span>' + escapeAttr(dateStr) + '</span>' +
+                const checkboxHtml = inboxSelectMode
+                    ? `<input type="checkbox" ${isChecked ? 'checked' : ''} onchange="handleMessageCheckboxChange('${escapeAttr(msgId)}', this.checked)" class="mt-1 w-4 h-4 accent-rose-500 rounded cursor-pointer flex-shrink-0">`
+                    : '';
+
+                return '<div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-start space-x-3 ' + (inboxSelectMode && isChecked ? 'border-rose-500/60 bg-rose-950/10' : '') + '">' +
+                    checkboxHtml +
+                    '<div class="flex-1 space-y-1 min-w-0">' +
+                        '<div class="flex flex-wrap justify-between gap-1 text-xs text-slate-400">' +
+                            '<span>From: <strong class="text-cyan-400">' + escapeAttr(msg.SenderUsername) + '</strong> | To: <strong class="text-cyan-400">' + escapeAttr(msg.RecipientUsername) + '</strong></span>' +
+                            '<span>' + escapeAttr(dateStr) + '</span>' +
+                        '</div>' +
+                        '<h5 class="font-bold text-sm text-white">' + escapeAttr(msg.Subject || 'No Subject') + '</h5>' +
+                        '<p class="text-xs text-slate-300">' + escapeAttr(msg.Body || '') + '</p>' +
                     '</div>' +
-                    '<h5 class="font-bold text-sm text-white">' + escapeAttr(msg.Subject || 'No Subject') + '</h5>' +
-                    '<p class="text-xs text-slate-300">' + escapeAttr(msg.Body || '') + '</p>' +
                 '</div>';
             }).join('');
         }
@@ -1356,6 +1498,8 @@
 
         function handleLogout() {
             currentUser = null;
+            inboxSelectMode = false;
+            selectedMessageIds.clear();
             const authSec = document.getElementById('authHeaderSection');
             const userSec = document.getElementById('userHeaderSection');
             if(authSec) authSec.classList.remove('hidden');
@@ -1661,7 +1805,7 @@
                 const imgs = window.uploaderInstances['inventoryDropZone'].getImages();
                 if (imgs && imgs.length > 0) {
                     // Combine all images (up to 5) into a single comma-separated string
-                    imageURLs = imgs.join(', ');
+                    imageURL = imgs[0];
                 }
             }
 
@@ -1747,7 +1891,7 @@
                 const imgs = window.uploaderInstances['marketDropZone'].getImages();
                 if (imgs && imgs.length > 0) {
                     // Combine all images (up to 5) into a single comma-separated string
-                    imageURLs = imgs.join(', ');
+                    imageURL = imgs[0];
                 }
             }
 
