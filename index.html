@@ -978,6 +978,7 @@
             }
 
             try {
+                setButtonLoading(btn, true);
                 const res = await api.run('updateProfile', {
                     username: currentUser.Username,
                     fullName,
@@ -1418,6 +1419,8 @@
             const password = document.getElementById('regPassword').value;
             const confirmPassword = document.getElementById('regConfirmPassword').value;
 
+            setButtonLoading(btn, true);
+            
             if (password !== confirmPassword) {
                 alertModal('Password Mismatch', 'The passwords entered do not match. Please re-enter.');
                 return;
@@ -1515,7 +1518,7 @@
             }
             
             const unElem = document.getElementById('headerUsername');
-            if(unElem) unElem.innerText = currentUser.Username + ' (' + (currentUser.Role || 'Member') + ')';
+            if(unElem) unElem.innerText = currentUser.Username + '<br> (' + (currentUser.Role || 'Member') + ')';
             if(currentUser.ProfileImageBase64) {
                 const av = document.getElementById('headerAvatar');
                 if(av) av.src = currentUser.ProfileImageBase64;
