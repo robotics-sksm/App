@@ -339,7 +339,7 @@
             <i class="fa-solid fa-store text-base"></i>
             <span class="whitespace-nowrap">Market</span>
         </button>
-        <button onclick="switchTab('inbox')" class="mobile-nav-btn flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="inbox">
+        <button onclick="switchTab('inbox')" id="mobileNavInboxBtn" class="mobile-nav-btn hidden flex-1 flex flex-col items-center justify-center text-slate-400 text-[11px] gap-0.5 py-0.5" data-tab="inbox">
             <i class="fa-solid fa-envelope text-base"></i>
             <span class="whitespace-nowrap">Inbox</span>
         </button>
@@ -859,6 +859,11 @@
                     btn.classList.remove('text-slate-400');
                 }
             });
+            
+            if (tabId === 'inbox' && currentUser) {
+                renderMessages();
+                loadServerData();
+            }
         }
 
         function toggleTheme() {
@@ -1714,7 +1719,9 @@
                     composeDraft = { recipient: '', subject: '', body: '' }; // Reset draft on successful send
                     alertModal('Sent', res.message || 'Message sent successfully');
                     closeModal('detailModal');
-                    loadServerData();
+                    await loadServerData();
+                    renderMessages();
+                    alertModal('Sent', res.message || 'Message sent successfully');
                 } else {
                     alertModal('User Not Found', res.message || 'Recipient username does not exist.');
                     // Modal stays open with preserved text for editing
