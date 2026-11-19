@@ -114,7 +114,7 @@
                 <i class="fa-solid fa-store text-base"></i>
                 <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Market</span>
             </button>
-            <button onclick="switchTab('inbox')" class="nav-btn group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="inbox">
+            <button id="navInboxBtn" onclick="switchTab('inbox')" class="nav-btn hidden group flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 text-slate-400 hover:text-white hover:bg-slate-800" data-tab="inbox">
                 <i class="fa-solid fa-envelope text-base"></i>
                 <span class="max-w-0 opacity-0 ml-0 group-hover:max-w-xs group-hover:opacity-100 group-hover:ml-2 transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden">Inbox</span>
             </button>
@@ -303,18 +303,12 @@
                         <i class="fa-solid fa-envelope text-cyan-400"></i>
                         <span>Direct Messaging Inbox</span>
                     </h3>
-                    <p class="text-xs text-slate-400">Communicate with peers and manage drafts.</p>
+                    <p class="text-xs text-slate-400">Private messaging strictly between sender & recipient.</p>
                 </div>
                 <div id="inboxActionBar" class="flex items-center space-x-2 w-full sm:w-auto">
-                    <button id="inboxSelectBtn" onclick="toggleInboxSelectMode()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all">
-                        Select
-                    </button>
-                    <button id="inboxComposeBtn" onclick="openSendMessageModal()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow transition-all">
-                        Compose Message
-                    </button>
-                    <button id="inboxDeleteBtn" onclick="openDeleteMessagesConfirm()" class="hidden flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow transition-all">
-                        Delete
-                    </button>
+                    <button id="inboxSelectBtn" onclick="toggleInboxSelectMode()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all">Select</button>
+                    <button id="inboxComposeBtn" onclick="openSendMessageModal()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs shadow transition-all">Compose Message</button>
+                    <button id="inboxDeleteBtn" onclick="openDeleteMessagesConfirm()" class="hidden flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow transition-all">Delete</button>
                 </div>
             </div>
             <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 shadow-xl">
@@ -360,12 +354,8 @@
             <h4 class="text-lg font-bold text-white">Confirm Delete</h4>
             <p id="deleteMessagesConfirmText" class="text-xs text-slate-300">Are you sure to delete 0 message?</p>
             <div class="flex space-x-3 pt-2">
-                <button type="button" onclick="closeModal('deleteMessagesModal')" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700">
-                    No
-                </button>
-                <button type="button" onclick="confirmDeleteSelectedMessages()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20">
-                    Yes
-                </button>
+                <button type="button" onclick="closeModal('deleteMessagesModal')" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs border border-slate-700">No</button>
+                <button type="button" onclick="confirmDeleteSelectedMessages()" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/20">Yes</button>
             </div>
         </div>
     </div>
@@ -379,7 +369,6 @@
             <div id="loginFormView">
                 <div class="text-center space-y-2 mb-4">
                     <h3 class="text-2xl font-bold text-white">Welcome Back</h3>
-                    <p class="text-xs text-slate-400">Sign in against Sheet.Users database</p>
                 </div>
                 <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
                     <div>
@@ -592,12 +581,29 @@
             }
           }
         };
+
+        
+        // Helper to lock button & display loading state
+        function setButtonLoading(btn, isLoading, originalText = '') {
+            if (!btn) return;
+            if (isLoading) {
+                btn.dataset.originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Processing...`;
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btn.innerHTML = originalText || btn.dataset.originalText || 'Submit';
+            }
+        }
         
         let currentUser = null;
         let cart = [];
         let inboxSelectMode = false;
         let selectedMessageIds = new Set();
 
+        let composeDraft = { recipient: '', subject: '', body: '' };
         let appData = {
             Users: [],
             Projects: [],
@@ -818,6 +824,11 @@
         }
 
         function switchTab(tabId) {
+            if (tabId === 'inbox' && !currentUser) {
+                alertModal('Access Denied', 'Please sign in to view your private Inbox.');
+                openModal('loginModal');
+                return;
+            }
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             const target = document.getElementById('tab-' + tabId);
             if (target) target.classList.remove('hidden');
@@ -1167,11 +1178,10 @@
         }
 
         function handleMessageCheckboxChange(msgId, isChecked) {
-            const key = String(msgId);
             if (isChecked) {
-                selectedMessageIds.add(key);
+                selectedMessageIds.add(String(msgId));
             } else {
-                selectedMessageIds.delete(key);
+                selectedMessageIds.delete(String(msgId));
             }
             const deleteBtn = document.getElementById('inboxDeleteBtn');
             if (deleteBtn) {
@@ -1187,63 +1197,75 @@
                 alertModal('No Message Selected', 'Please tick at least one message to delete.');
                 return;
             }
-            const noun = count === 1 ? 'message' : 'messages';
-            const textEl = document.getElementById('deleteMessagesConfirmText');
-            if (textEl) {
-                textEl.innerText = `Are you sure to delete ${count} ${noun}?`;
-            }
+            document.getElementById('deleteMessagesConfirmText').innerText = `Are you sure to delete ${count} message(s)?`;
             openModal('deleteMessagesModal');
         }
 
         async function confirmDeleteSelectedMessages() {
+            const btn = document.getElementById('confirmDeleteBtn');
+            setButtonLoading(btn, true);
             const idsToDelete = Array.from(selectedMessageIds);
-            closeModal('deleteMessagesModal');
-
-            if (idsToDelete.length === 0) return;
-
             try {
                 const res = await api.run('deleteMessages', {
                     messageIds: idsToDelete,
                     username: currentUser ? currentUser.Username : ''
                 });
 
+                setButtonLoading(btn, false);
+                closeModal('deleteMessagesModal');
+
                 if (res && res.success !== false) {
-                    appData.Messages = (appData.Messages || []).filter(
-                        m => !idsToDelete.includes(String(m.MessageID))
-                    );
+                    appData.Messages = (appData.Messages || []).filter(m => !idsToDelete.includes(String(m.MessageID)));
                     inboxSelectMode = false;
                     selectedMessageIds.clear();
 
-                    const selectBtn = document.getElementById('inboxSelectBtn');
-                    const composeBtn = document.getElementById('inboxComposeBtn');
-                    const deleteBtn = document.getElementById('inboxDeleteBtn');
-                    if (selectBtn) selectBtn.innerText = 'Select';
-                    if (composeBtn) composeBtn.classList.remove('hidden');
-                    if (deleteBtn) {
-                        deleteBtn.classList.add('hidden');
-                        deleteBtn.innerText = 'Delete';
-                    }
+                    document.getElementById('inboxSelectBtn').innerText = 'Select';
+                    document.getElementById('inboxComposeBtn').classList.remove('hidden');
+                    document.getElementById('inboxDeleteBtn').classList.add('hidden');
 
                     renderMessages();
-                    alertModal('Deleted', res.message || `${idsToDelete.length} message(s) deleted.`);
+                    alertModal('Deleted', res.message || 'Messages deleted.');
                 } else {
                     alertModal('Delete Failed', res.message || 'Could not delete selected messages.');
                 }
             } catch (err) {
+                setButtonLoading(btn, false);
+                closeModal('deleteMessagesModal');
                 alertModal('Delete Failed', err.message);
+            }
+        }
+
+        function saveComposeDraftState() {
+            const rec = document.getElementById('msgRecipient');
+            const sub = document.getElementById('msgSubject');
+            const body = document.getElementById('msgBody');
+            if (rec && sub && body) {
+                composeDraft.recipient = rec.value;
+                composeDraft.subject = sub.value;
+                composeDraft.body = body.value;
             }
         }
 
         function renderMessages() {
             const list = document.getElementById('messagesList');
             if(!list) return;
+
+            if (!currentUser) {
+                list.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">Sign in to view messages.</p>';
+                return;
+            }
             const items = Array.isArray(appData.Messages) ? appData.Messages : [];
-            const userMessages = currentUser ? items.filter(m => {
+            const activeUser = String(currentUser.Username || '').trim().toLowerCase();
+
+            // Filter strictly by Owner or Recipient/Sender matching active user
+            const userMessages = items.filter(m => {
+                const owner = String(m.Owner || '').trim().toLowerCase();
                 const recipient = String(m.RecipientUsername || '').trim().toLowerCase();
                 const sender = String(m.SenderUsername || '').trim().toLowerCase();
-                const current = String(currentUser.Username || '').trim().toLowerCase();
-                return recipient === current || sender === current;
-            }) : items;
+                
+                if (owner) return owner === activeUser;
+                return recipient === activeUser || sender === activeUser;
+            });
             
             if(userMessages.length === 0) {
                 list.innerHTML = '<p class="text-xs text-slate-400 text-center py-4">No messages in inbox.</p>';
@@ -1265,17 +1287,17 @@
                     ? `<input type="checkbox" ${isChecked ? 'checked' : ''} onchange="handleMessageCheckboxChange('${escapeAttr(msgId)}', this.checked)" class="mt-1 w-4 h-4 accent-rose-500 rounded cursor-pointer flex-shrink-0">`
                     : '';
 
-                return '<div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-start space-x-3 ' + (inboxSelectMode && isChecked ? 'border-rose-500/60 bg-rose-950/10' : '') + '">' +
-                    checkboxHtml +
-                    '<div class="flex-1 space-y-1 min-w-0">' +
-                        '<div class="flex flex-wrap justify-between gap-1 text-xs text-slate-400">' +
-                            '<span>From: <strong class="text-cyan-400">' + escapeAttr(msg.SenderUsername) + '</strong> | To: <strong class="text-cyan-400">' + escapeAttr(msg.RecipientUsername) + '</strong></span>' +
-                            '<span>' + escapeAttr(dateStr) + '</span>' +
-                        '</div>' +
-                        '<h5 class="font-bold text-sm text-white">' + escapeAttr(msg.Subject || 'No Subject') + '</h5>' +
-                        '<p class="text-xs text-slate-300">' + escapeAttr(msg.Body || '') + '</p>' +
-                    '</div>' +
-                '</div>';
+                return `<div class="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-start space-x-3 ${inboxSelectMode && isChecked ? 'border-rose-500/60 bg-rose-950/10' : ''}">
+                    ${checkboxHtml}
+                    <div class="flex-1 space-y-1 min-w-0">
+                        <div class="flex flex-wrap justify-between gap-1 text-xs text-slate-400">
+                            <span>From: <strong class="text-cyan-400">${escapeAttr(msg.SenderUsername)}</strong> | To: <strong class="text-cyan-400">${escapeAttr(msg.RecipientUsername)}</strong></span>
+                            <span>${escapeAttr(dateStr)}</span>
+                        </div>
+                        <h5 class="font-bold text-sm text-white">${escapeAttr(msg.Subject || 'No Subject')}</h5>
+                        <p class="text-xs text-slate-300">${escapeAttr(msg.Body || '')}</p>
+                    </div>
+                </div>`;
             }).join('');
         }
 
@@ -1360,20 +1382,25 @@
 
         async function handleLoginSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('loginSubmitBtn');
+            setButtonLoading(btn, true);
+
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
 
             try {
                 const res = await api.run('login', { username, password });
-                if(res && res.success) {
+                setButtonLoading(btn, false);
+                if (res && res.success) {
                     currentUser = res.user;
                     updateAuthUI();
                     closeModal('loginModal');
-                    alertModal('Welcome Back', 'Successfully signed in as ' + currentUser.Username);
+                    alertModal('Welcome Back', 'Signed in as ' + currentUser.Username);
                 } else {
                     alertModal('Sign In Failed', res ? res.message : 'Invalid credentials');
                 }
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Sign In Failed', err.message);
             }
         }
@@ -1473,7 +1500,15 @@
         }
 
         function updateAuthUI() {
-            if(!currentUser) return;
+            const navInbox = document.getElementById('navInboxBtn');
+            const mobileNavInbox = document.getElementById('mobileNavInboxBtn');
+            
+            if (!currentUser) {
+                if (navInbox) navInbox.classList.add('hidden');
+                if (mobileNavInbox) mobileNavInbox.classList.add('hidden');
+                return;
+            }
+            
             const unElem = document.getElementById('headerUsername');
             if(unElem) unElem.innerText = currentUser.Username + ' (' + (currentUser.Role || 'Member') + ')';
             if(currentUser.ProfileImageBase64) {
@@ -1488,6 +1523,10 @@
                 userSec.classList.add('flex');
             }
 
+            // Show Inbox nav items only when authenticated
+            if (navInbox) navInbox.classList.remove('hidden');
+            if (mobileNavInbox) mobileNavInbox.classList.remove('hidden');
+
             const isAdmin = String(currentUser.Role || '').trim().toLowerCase() === 'admin' || currentUser.Username === 'admin';
             const invBtn = document.getElementById('adminAddInventoryBtn');
             const mktBtn = document.getElementById('adminAddMarketBtn');
@@ -1498,6 +1537,7 @@
 
         function handleLogout() {
             currentUser = null;
+            composeDraft = { recipient: '', subject: '', body: '' }; // Clear draft state on logout
             inboxSelectMode = false;
             selectedMessageIds.clear();
             const authSec = document.getElementById('authHeaderSection');
@@ -1629,28 +1669,29 @@
           openModal('detailModal');
         }
 
-        function openSendMessageModal() {
-            if(!currentUser) {
+       function openSendMessageModal() {
+            if (!currentUser) {
                 alertModal('Authentication Required', 'Please sign in to send messages.');
                 openModal('loginModal');
                 return;
             }
+            
             document.getElementById('detailModalContent').innerHTML = `
                 <h3 class="text-2xl font-bold text-white">Compose Message</h3>
                 <form onsubmit="handleSendMessageSubmit(event)" class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Recipient Username</label>
-                        <input type="text" id="msgRecipient" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                        <input type="text" id="msgRecipient" required value="${escapeAttr(composeDraft.recipient)}" oninput="saveComposeDraftState()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Subject</label>
-                        <input type="text" id="msgSubject" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
+                        <input type="text" id="msgSubject" required value="${escapeAttr(composeDraft.subject)}" oninput="saveComposeDraftState()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-300 mb-1">Body</label>
-                        <textarea id="msgBody" required rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white"></textarea>
+                        <textarea id="msgBody" required rows="4" oninput="saveComposeDraftState()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-xs text-white">${escapeAttr(composeDraft.body)}</textarea>
                     </div>
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Send Message</button>
+                    <button id="sendMessageBtn" type="submit" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs">Send Message</button>
                 </form>
             `;
             openModal('detailModal');
@@ -1658,16 +1699,28 @@
 
         async function handleSendMessageSubmit(e) {
             e.preventDefault();
+            const btn = document.getElementById('sendMessageBtn');
+            setButtonLoading(btn, true);
+
             const recipient = document.getElementById('msgRecipient').value;
             const subject = document.getElementById('msgSubject').value;
             const body = document.getElementById('msgBody').value;
 
             try {
                 const res = await api.run('sendMessage', { sender: currentUser.Username, recipient, subject, body });
-                alertModal('Sent', res.message || 'Message sent successfully');
-                closeModal('detailModal');
-                loadServerData();
+                setButtonLoading(btn, false);
+
+                if (res && res.success) {
+                    composeDraft = { recipient: '', subject: '', body: '' }; // Reset draft on successful send
+                    alertModal('Sent', res.message || 'Message sent successfully');
+                    closeModal('detailModal');
+                    loadServerData();
+                } else {
+                    alertModal('User Not Found', res.message || 'Recipient username does not exist.');
+                    // Modal stays open with preserved text for editing
+                }
             } catch (err) {
+                setButtonLoading(btn, false);
                 alertModal('Send Failed', err.message);
             }
         }
